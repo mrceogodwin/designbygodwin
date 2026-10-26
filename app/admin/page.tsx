@@ -4,7 +4,6 @@ import { getAdminSession } from "@/lib/admin-auth";
 import MessagesList from "./messages-list";
 
 export const dynamic = "force-dynamic";
-
 type PortfolioMessage = { id: number; name: string; email: string; topic: string; message: string; created_at: string | Date };
 
 export default async function AdminDashboardPage() {
@@ -22,6 +21,7 @@ export default async function AdminDashboardPage() {
       loadError = "Messages could not be loaded. Check the database connection and portfolio_messages table.";
     }
   }
+  const emailNotificationsConfigured = Boolean(process.env.BREVO_API_KEY && process.env.BREVO_SENDER_EMAIL && process.env.ADMIN_EMAIL);
   const panel: React.CSSProperties = { background: "#fffdf8", border: "1px solid #e2ddd2", borderRadius: 16, padding: 22 };
   const muted: React.CSSProperties = { color: "#77766e", fontSize: 13 };
   return (
@@ -36,7 +36,7 @@ export default async function AdminDashboardPage() {
         <p style={{ ...muted, fontSize: 15, marginBottom: 28 }}>Portfolio contact messages, saved securely for you to review.</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 14, marginBottom: 24 }}>
           <div style={panel}><p style={{ ...muted, marginTop: 0 }}>TOTAL MESSAGES LOADED</p><strong style={{ fontSize: 38, letterSpacing: "-.05em" }}>{messages.length}</strong><p style={muted}>Showing up to 100 latest messages</p></div>
-          <div style={panel}><p style={{ ...muted, marginTop: 0 }}>EMAIL NOTIFICATIONS</p><strong style={{ fontSize: 21 }}>Not connected</strong><p style={muted}>Messages are saved in your database. Email alerts are a separate next step.</p></div>
+          <div style={panel}><p style={{ ...muted, marginTop: 0 }}>EMAIL NOTIFICATIONS</p><strong style={{ fontSize: 21 }}>{emailNotificationsConfigured ? "Configured" : "Setup required"}</strong><p style={muted}>{emailNotificationsConfigured ? "Provider credentials are present; delivery still needs a live test." : "Add BREVO_API_KEY and a verified BREVO_SENDER_EMAIL in Vercel to enable alerts."}</p></div>
         </div>
         {loadError ? <div role="alert" style={{ ...panel, borderColor: "#e6b3a8", color: "#9c3020", marginBottom: 20 }}>{loadError}</div> : null}
         <MessagesList messages={messages} />
