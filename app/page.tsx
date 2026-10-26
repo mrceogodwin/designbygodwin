@@ -89,7 +89,7 @@ export default function Home() {
 
       <section className="work-section" id="work"><div className="page-width">
         <div className="section-kicker"><span>02 / SELECTED PROJECTS</span><span>IN PROGRESS IS STILL PROGRESS</span></div>
-        <div className="section-intro-row"><h2 className="display-heading">A few things<br />I’m <em>building.</em></h2><p>Real project work, honest status, and the thinking behind each build. Select a project to explore its details.</p></div>
+        <div className="section-intro-row"><h2 className="display-heading">A few things<br />I’m <em>building.</em></h2><p>Real project work, honest status, and the thinking behind each build. Open a repository or expand the build notes.</p></div>
         <div className="project-grid">{projects.map(project => <article className={"project-card " + project.theme} key={project.id}>
           <a className="project-art" href={project.href} target="_blank" rel="noreferrer" aria-label={"Open " + project.name + " source repository in a new tab"}>
             <div className="project-art-head"><span>PROJECT / {project.id}</span><span>{project.year} ↗</span></div><div className="project-glyph">{project.symbol}<span>.</span></div><div className="project-art-lines" /><div className="project-art-foot"><span>{project.category}</span><span>OPEN REPOSITORY ↗</span></div>
