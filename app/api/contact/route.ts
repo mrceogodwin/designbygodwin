@@ -8,6 +8,7 @@ type ContactPayload = {
   email?: unknown;
   topic?: unknown;
   message?: unknown;
+  website?: unknown;
 };
 
 export async function POST(request: Request) {
@@ -24,6 +25,11 @@ export async function POST(request: Request) {
     payload = (await request.json()) as ContactPayload;
   } catch {
     return NextResponse.json({ error: "Please send a valid form submission." }, { status: 400 });
+  }
+
+  // Quietly discard bot submissions that fill the hidden honeypot field.
+  if (typeof payload.website === "string" && payload.website.trim()) {
+    return NextResponse.json({ ok: true }, { status: 201 });
   }
 
   const name = typeof payload.name === "string" ? payload.name.trim() : "";
