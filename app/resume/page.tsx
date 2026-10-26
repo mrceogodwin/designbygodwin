@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ResumeActions from "./resume-actions";
 
 export const metadata: Metadata = {
   title: "Resume — Godwin Oriabure",
@@ -32,10 +33,7 @@ const projects = [
 export default function ResumePage() {
   return (
     <main className="resume-page">
-      <div className="resume-toolbar no-print">
-        <a href="/">← BACK TO PORTFOLIO</a>
-        <button type="button" onClick={() => window.print()}>PRINT / SAVE AS PDF ↗</button>
-      </div>
+      <ResumeActions />
 
       <article className="resume-sheet">
         <header className="resume-header">
