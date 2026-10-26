@@ -26,7 +26,7 @@ const projects = [
     status: "Ongoing build",
     description:
       "A digital media and publishing project exploring responsive web interfaces and culture-focused content.",
-    href: "https://github.com/mrceogodwin/Kilode",
+    href: "https://kilode.com.ng",
   },
 ];
 
