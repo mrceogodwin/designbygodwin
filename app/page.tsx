@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const projects = [
   { id: "01", name: "VIBR.NG", category: "NETWORK / STARTUP", year: "2026", description: "A founder and creator network concept designed to help builders share what they are making and connect with potential investors.", stack: ["React", "APIs", "NestJS"], status: "IN DEVELOPMENT", href: "https://github.com/mrceogodwin/vibr", symbol: "V", theme: "vibr", detail: "A product-focused build exploring profiles, project discovery, and founder-to-investor connections. Work in progress." },
@@ -27,6 +27,32 @@ const socials = [
 
 export default function Home() {
   const [activeProject, setActiveProject] = useState<string | null>(null);
+  const [typedHeadline, setTypedHeadline] = useState("momentum.");
+  useEffect(() => {
+    const words = ["momentum.", "web products.", "digital tools."];
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let wordIndex = 0;
+    let deleting = true;
+    let characterIndex = words[0].length;
+    let timer: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      const current = words[wordIndex];
+      characterIndex += deleting ? -1 : 1;
+      setTypedHeadline(current.slice(0, characterIndex));
+      let delay = deleting ? 48 : 95;
+      if (characterIndex <= 0) {
+        deleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        delay = 260;
+      } else if (characterIndex >= words[wordIndex].length) {
+        deleting = true;
+        delay = 1450;
+      }
+      timer = setTimeout(tick, delay);
+    };
+    timer = setTimeout(tick, 1700);
+    return () => clearTimeout(timer);
+  }, []);
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <main id="top">
@@ -42,7 +68,7 @@ export default function Home() {
       <section className="hero-section page-width">
         <div className="hero-copy">
           <div className="eyebrow"><span className="eyebrow-line" /> INDEPENDENT WEB DEVELOPER <span className="eyebrow-year">PORTFOLIO / 2026</span></div>
-          <h1>Digital ideas.<br /><span className="serif-word">Real</span> <span className="outlined-word">momentum.</span></h1>
+          <h1>Digital ideas.<br /><span className="serif-word">Real</span> <span className="outlined-word typewriter-word">{typedHeadline}<span className="typing-cursor" aria-hidden="true">|</span></span></h1>
           <p className="hero-intro">I’m Godwin — a self-taught developer building web experiences and digital products through curiosity, craft, and hands-on projects.</p>
           <div className="hero-actions"><a className="button button-dark" href="#work">EXPLORE MY WORK <span>↘</span></a><a className="button button-quiet" href="#contact">LET’S CONNECT <span>↗</span></a></div>
           <div className="hero-stats"><div><strong>03</strong><span>FEATURED BUILDS</span></div><div><strong>∞</strong><span>THINGS TO LEARN</span></div><div><strong>NG</strong><span>BASED IN NIGERIA</span></div></div>
@@ -65,10 +91,10 @@ export default function Home() {
         <div className="section-kicker"><span>02 / SELECTED PROJECTS</span><span>IN PROGRESS IS STILL PROGRESS</span></div>
         <div className="section-intro-row"><h2 className="display-heading">A few things<br />I’m <em>building.</em></h2><p>Real project work, honest status, and the thinking behind each build. Select a project to explore its details.</p></div>
         <div className="project-grid">{projects.map(project => <article className={"project-card " + project.theme} key={project.id}>
-          <button className="project-art" onClick={() => setActiveProject(activeProject === project.id ? null : project.id)} aria-expanded={activeProject === project.id} aria-label={"Show details for " + project.name}>
-            <div className="project-art-head"><span>PROJECT / {project.id}</span><span>{project.year} ↗</span></div><div className="project-glyph">{project.symbol}<span>.</span></div><div className="project-art-lines" /><div className="project-art-foot"><span>{project.category}</span><span>EXPLORE +</span></div>
-          </button>
-          <div className="project-body"><div className="project-name-row"><h3>{project.name}</h3><span className="project-status"><i />{project.status}</span></div><p>{project.description}</p><div className="project-tech">{project.stack.map(t => <span key={t}>{t}</span>)}</div>{activeProject === project.id && <div className="project-detail"><p>{project.detail}</p><a href={project.href} target="_blank" rel="noreferrer">OPEN SOURCE REPOSITORY ↗</a></div>}<div className="project-link-row"><span>CASE STUDY / BUILD NOTES</span><button onClick={() => setActiveProject(activeProject === project.id ? null : project.id)}>{activeProject === project.id ? "CLOSE −" : "VIEW DETAILS +"}</button></div></div>
+          <a className="project-art" href={project.href} target="_blank" rel="noreferrer" aria-label={"Open " + project.name + " source repository in a new tab"}>
+            <div className="project-art-head"><span>PROJECT / {project.id}</span><span>{project.year} ↗</span></div><div className="project-glyph">{project.symbol}<span>.</span></div><div className="project-art-lines" /><div className="project-art-foot"><span>{project.category}</span><span>OPEN REPOSITORY ↗</span></div>
+          </a>
+          <div className="project-body"><div className="project-name-row"><h3><a href={project.href} target="_blank" rel="noreferrer" aria-label={"Open " + project.name + " repository"}>{project.name} ↗</a></h3><span className="project-status"><i />{project.status}</span></div><p>{project.description}</p><div className="project-tech">{project.stack.map(t => <span key={t}>{t}</span>)}</div>{activeProject === project.id && <div className="project-detail"><p>{project.detail}</p><a href={project.href} target="_blank" rel="noreferrer">OPEN SOURCE REPOSITORY ↗</a></div>}<div className="project-link-row"><span>CASE STUDY / BUILD NOTES</span><button onClick={() => setActiveProject(activeProject === project.id ? null : project.id)}>{activeProject === project.id ? "CLOSE −" : "VIEW DETAILS +"}</button></div></div>
         </article>)}</div>
         <div className="projects-footer"><span>MORE ITERATIONS. MORE TO COME.</span><a href="https://github.com/mrceogodwin" target="_blank" rel="noreferrer">ALL REPOSITORIES ON GITHUB ↗</a></div>
       </div></section>
