@@ -2,7 +2,18 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Resume — Godwin Oriabure",
-  description: "Project-focused web developer resume for Godwin Oriabure, with selected projects, technical toolkit, and print-ready layout.",
+  description:
+    "Project-focused web developer resume for Godwin Oriabure, with selected projects, technical toolkit, and print-ready layout.",
+  alternates: {
+    canonical: "/resume",
+  },
+  openGraph: {
+    title: "Resume — Godwin Oriabure",
+    description:
+      "Project-focused web developer resume, selected projects, technical toolkit, and education.",
+    url: "/resume",
+    type: "profile",
+  },
 };
 
 const projects = [
