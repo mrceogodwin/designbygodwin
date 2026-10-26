@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import ResumeActions from "./resume-actions";
 
 export const metadata: Metadata = {
   title: "Resume — Godwin Oriabure",
@@ -23,9 +22,9 @@ const projects = [
   },
   {
     name: "KILODE",
-    status: "Ongoing build",
+    status: "Live website",
     description:
-      "A digital media and publishing project exploring responsive web interfaces and culture-focused content.",
+      "A culture-focused digital media and publishing website with entertainment and current-interest content.",
     href: "https://kilode.com.ng",
   },
 ];
@@ -33,7 +32,10 @@ const projects = [
 export default function ResumePage() {
   return (
     <main className="resume-page">
-      <ResumeActions />
+      <div className="resume-toolbar no-print">
+        <a href="/">← BACK TO PORTFOLIO</a>
+        <span>PRINT / SAVE AS PDF: use Ctrl+P (Windows) or Cmd+P (Mac)</span>
+      </div>
 
       <article className="resume-sheet">
         <header className="resume-header">
