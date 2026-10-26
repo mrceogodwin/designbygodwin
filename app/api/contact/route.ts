@@ -1,5 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 import { NextResponse } from "next/server";
+import { enforceRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 type ContactPayload = { name?: unknown; email?: unknown; topic?: unknown; message?: unknown; website?: unknown };
@@ -48,6 +49,16 @@ export async function POST(request: Request) {
   if (!message || message.length > 5000) return NextResponse.json({ error: "Your message must be between 1 and 5,000 characters." }, { status: 400 });
   const allowedTopics = ["Job opportunity", "Freelance project", "Collaboration", "Just saying hello"];
   const safeTopic = allowedTopics.includes(topic) ? topic : "General";
+
+  try {
+    if (await enforceRateLimit({ request, namespace: "contact", limit: 5, windowSeconds: 3600 })) {
+      return NextResponse.json({ error: "Too many messages have been sent from this connection. Please try again in an hour." }, { status: 429 });
+    }
+  } catch {
+    // Fail closed if rate limiting cannot be checked.
+    return NextResponse.json({ error: "The contact form is temporarily unavailable. Please try again later." }, { status: 503 });
+  }
+
   try {
     const sql = neon(databaseUrl);
     await sql`CREATE TABLE IF NOT EXISTS portfolio_messages (id BIGSERIAL PRIMARY KEY, name VARCHAR(120) NOT NULL, email VARCHAR(254) NOT NULL, topic VARCHAR(80) NOT NULL, message TEXT NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
