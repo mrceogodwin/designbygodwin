@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { enforceRateLimit } from "@/lib/rate-limit";
 import {
   ADMIN_COOKIE_NAME,
   ADMIN_SESSION_SECONDS,
@@ -26,6 +27,14 @@ export async function POST(request: Request) {
       { error: "Owner login is not configured yet. Add ADMIN_EMAIL, ADMIN_PASSWORD, and a 32+ character AUTH_SECRET in Vercel." },
       { status: 503 }
     );
+  }
+
+  try {
+    if (await enforceRateLimit({ request, namespace: "admin-login", limit: 10, windowSeconds: 900 })) {
+      return NextResponse.json({ error: "Too many sign-in attempts. Please wait 15 minutes and try again." }, { status: 429 });
+    }
+  } catch {
+    return NextResponse.json({ error: "Owner login is temporarily unavailable. Please try again later." }, { status: 503 });
   }
 
   if (!verifyOwnerCredentials(payload.email, payload.password)) {
