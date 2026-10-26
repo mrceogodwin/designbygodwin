@@ -112,6 +112,7 @@ export default function Home() {
 
 function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", topic: "Job opportunity", message: "" });
+  const [website, setWebsite] = useState("");
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -125,7 +126,7 @@ function ContactForm() {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, website }),
       });
       const result = await response.json() as { ok?: boolean; error?: string };
       if (!response.ok) throw new Error(result.error || "Could not send your message. Please try again.");
@@ -137,5 +138,5 @@ function ContactForm() {
       setSubmitting(false);
     }
   }
-  return <form className="contact-form" onSubmit={submit}><div className="form-heading"><span>CONTACT FORM / 01</span><span>✳</span></div><label>Your name<input value={form.name} onChange={e => update("name", e.target.value)} placeholder="What should I call you?" maxLength={120} required /></label><label>Email address<input type="email" value={form.email} onChange={e => update("email", e.target.value)} placeholder="you@company.com" maxLength={254} required /></label><label>What’s this about?<select value={form.topic} onChange={e => update("topic", e.target.value)}><option>Job opportunity</option><option>Freelance project</option><option>Collaboration</option><option>Just saying hello</option></select></label><label>Your message<textarea value={form.message} onChange={e => update("message", e.target.value)} placeholder="Tell me a little about it..." rows={4} maxLength={5000} required /></label>{error && <p className="form-error">{error}</p>}{sent && <p className="form-success">Thanks — your message has been saved. I’ll be in touch.</p>}<button className="button button-dark form-submit" type="submit" disabled={submitting}>{submitting ? "SENDING..." : "SEND MESSAGE"} <span>↗</span></button><p className="form-privacy">Messages are stored in the portfolio database. Please avoid sending sensitive personal information.</p></form>;
+  return <form className="contact-form" onSubmit={submit}><div className="contact-honeypot" aria-hidden="true"><label>Leave this field empty<input name="website" value={website} onChange={e => setWebsite(e.target.value)} tabIndex={-1} autoComplete="off" /></label></div><div className="form-heading"><span>CONTACT FORM / 01</span><span>✳</span></div><label>Your name<input value={form.name} onChange={e => update("name", e.target.value)} placeholder="What should I call you?" maxLength={120} required /></label><label>Email address<input type="email" value={form.email} onChange={e => update("email", e.target.value)} placeholder="you@company.com" maxLength={254} required /></label><label>What’s this about?<select value={form.topic} onChange={e => update("topic", e.target.value)}><option>Job opportunity</option><option>Freelance project</option><option>Collaboration</option><option>Just saying hello</option></select></label><label>Your message<textarea value={form.message} onChange={e => update("message", e.target.value)} placeholder="Tell me a little about it..." rows={4} maxLength={5000} required /></label>{error && <p className="form-error">{error}</p>}{sent && <p className="form-success">Thanks — your message has been saved. I’ll be in touch.</p>}<button className="button button-dark form-submit" type="submit" disabled={submitting}>{submitting ? "SENDING..." : "SEND MESSAGE"} <span>↗</span></button><p className="form-privacy">Messages are stored in the portfolio database. Please avoid sending sensitive personal information.</p></form>;
 }
