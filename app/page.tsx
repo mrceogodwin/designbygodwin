@@ -1,150 +1,113 @@
+"use client";
+
+import { useState } from "react";
+
 const projects = [
-  {
-    number: "01",
-    name: "VIBR.NG",
-    type: "CREATOR / INVESTOR NETWORK",
-    description:
-      "A digital space shaped around discovering builders, sharing projects, and connecting ambitious founders with potential investors.",
-    status: "IN DEVELOPMENT",
-    tags: ["React", "APIs", "Product thinking"],
-    href: "https://github.com/mrceogodwin/vibr",
-    mark: "V",
-    className: "project-vibr",
-  },
-  {
-    number: "02",
-    name: "STACKS.NG",
-    type: "SOFTWARE MARKETPLACE",
-    description:
-      "A product concept for discovering digital tools, software, and practical web services in one focused marketplace.",
-    status: "IN DEVELOPMENT",
-    tags: ["Web applications", "Product design", "PHP"],
-    href: "https://github.com/mrceogodwin/stacks",
-    mark: "S",
-    className: "project-stacks",
-  },
-  {
-    number: "03",
-    name: "KILODE",
-    type: "DIGITAL MEDIA / WEB",
-    description:
-      "A media publishing project exploring a cleaner, more modern experience for entertainment, culture, and trending stories.",
-    status: "ONGOING BUILD",
-    tags: ["React", "Web UI", "Content experiences"],
-    href: "https://github.com/mrceogodwin/Kilode",
-    mark: "K",
-    className: "project-kilode",
-  },
+  { id: "01", name: "VIBR.NG", category: "NETWORK / STARTUP", year: "2026", description: "A founder and creator network concept designed to help builders share what they are making and connect with potential investors.", stack: ["React", "APIs", "NestJS"], status: "IN DEVELOPMENT", href: "https://github.com/mrceogodwin/vibr", symbol: "V", theme: "vibr", detail: "A product-focused build exploring profiles, project discovery, and founder-to-investor connections. Work in progress." },
+  { id: "02", name: "STACKS.NG", category: "SOFTWARE MARKETPLACE", year: "2026", description: "A marketplace concept for practical software, plugins, and online tools, with an emphasis on a clear product discovery experience.", stack: ["Web apps", "PHP", "Product UI"], status: "IN DEVELOPMENT", href: "https://github.com/mrceogodwin/stacks", symbol: "S", theme: "stacks", detail: "The planned experience includes digital product listings, licensing, and a path to manage updates. Work in progress." },
+  { id: "03", name: "KILODE", category: "DIGITAL MEDIA", year: "2026", description: "A digital media project exploring modern publishing, entertainment, and culture-focused web experiences.", stack: ["React", "Web UI", "Content"], status: "ONGOING BUILD", href: "https://github.com/mrceogodwin/Kilode", symbol: "K", theme: "kilode", detail: "An ongoing media and interface project with attention to responsive presentation and a distinctive editorial feel." },
 ];
 
-const capabilities = [
-  ["01", "Frontend development", "React · Responsive interfaces · UI implementation"],
-  ["02", "Web application development", "APIs · Application structure · Product features"],
-  ["03", "Backend foundations", "NestJS · PHP · Connecting application layers"],
-  ["04", "Product-minded execution", "Breaking ideas into stages · Iteration · Debugging"],
+const services = [
+  ["01", "Frontend development", "Responsive pages, interface implementation, reusable components."],
+  ["02", "Web experiences", "Landing pages, portfolios, product sites, interaction details."],
+  ["03", "Application features", "API integration, forms, interface states, iterative debugging."],
+  ["04", "Product thinking", "Turning broad ideas into smaller, testable delivery stages."],
+];
+
+const timeline = [
+  { date: "NOW", title: "Independent project builds", kind: "PROJECT EXPERIENCE", body: "Learning through hands-on product development, implementation, and iteration.", current: true },
+  { date: "ONGOING", title: "Building a practical web toolkit", kind: "CONTINUOUS LEARNING", body: "Working with React, APIs, NestJS, PHP, GitHub, and deployment workflows.", current: false },
+];
+
+const socials = [
+  { name: "GitHub", handle: "@mrceogodwin", href: "https://github.com/mrceogodwin", icon: "GH" },
+  { name: "LinkedIn", handle: "Add your profile URL", href: "", icon: "in" },
+  { name: "X / Twitter", handle: "Add your profile URL", href: "", icon: "𝕏" },
+  { name: "Instagram", handle: "Add your profile URL", href: "", icon: "IG" },
 ];
 
 export default function Home() {
+  const [activeProject, setActiveProject] = useState<string | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  function copyEmail() {
+    void navigator.clipboard?.writeText("hello@designbygodwin.com").then(() => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1800);
+    });
+  }
+
   return (
-    <main>
-      <div className="topline">
-        <a className="wordmark" href="#top" aria-label="Godwin Oriabure home">
-          G<span>.</span>O
-        </a>
-        <div className="topline-center"><span className="live-dot" /> AVAILABLE FOR REMOTE OPPORTUNITIES</div>
-        <a className="nav-contact" href="#contact">LET’S TALK <span>↗</span></a>
-      </div>
+    <main id="top">
+      <header className="nav-wrap">
+        <a className="brand" href="#top" aria-label="Godwin home"><span className="brand-icon">g<span>.</span></span><span className="brand-name">GODWIN<br /><small>WEB DEVELOPER</small></span></a>
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Toggle navigation">{menuOpen ? "CLOSE −" : "MENU +"}</button>
+        <nav className={menuOpen ? "main-nav nav-open" : "main-nav"} aria-label="Main navigation">
+          {[["About", "#about"], ["Work", "#work"], ["Services", "#services"], ["Experience", "#experience"], ["Contact", "#contact"]].map(([label, href]) => <a key={label} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}
+        </nav>
+        <a className="nav-availability" href="#contact"><span /> OPEN TO WORK</a>
+      </header>
 
-      <section className="hero shell" id="top">
-        <div className="hero-meta reveal">
-          <span className="eyebrow"><span className="tiny-square" /> INDEPENDENT WEB DEVELOPER</span>
-          <span className="hero-index">PORTFOLIO / 2026</span>
+      <section className="hero-section page-width">
+        <div className="hero-copy">
+          <div className="eyebrow"><span className="eyebrow-line" /> INDEPENDENT WEB DEVELOPER <span className="eyebrow-year">PORTFOLIO / 2026</span></div>
+          <h1>Digital ideas.<br /><span className="serif-word">Real</span> <span className="outlined-word">momentum.</span></h1>
+          <p className="hero-intro">I’m Godwin — a self-taught developer building web experiences and digital products through curiosity, craft, and hands-on projects.</p>
+          <div className="hero-actions"><a className="button button-dark" href="#work">EXPLORE MY WORK <span>↘</span></a><a className="button button-quiet" href="#contact">LET’S CONNECT <span>↗</span></a></div>
+          <div className="hero-stats"><div><strong>03</strong><span>FEATURED BUILDS</span></div><div><strong>∞</strong><span>THINGS TO LEARN</span></div><div><strong>NG</strong><span>BASED IN NIGERIA</span></div></div>
         </div>
-        <div className="hero-title-wrap">
-          <h1 className="hero-title reveal">I BUILD<br /><span className="outline-text">DIGITAL</span><br />THAT <span className="orange-word">MOVES<span className="period">.</span></span></h1>
-          <div className="hero-aside reveal">
-            <div className="orbit" aria-hidden="true"><span>G</span><i>✳</i></div>
-            <p>Curious by nature.<br />Builder by practice.</p>
-            <p className="aside-muted">Turning ideas into thoughtful web experiences, one deliberate release at a time.</p>
-            <a className="text-link" href="#work">EXPLORE SELECTED WORK <span>↓</span></a>
-          </div>
+        <div className="hero-art" aria-label="Abstract generative geometric artwork">
+          <div className="art-label art-label-top">DESIGN × CODE<br />IDEAS IN MOTION</div><div className="art-orbit orbit-one" /><div className="art-orbit orbit-two" /><div className="art-disc"><span>g.</span></div><div className="art-spark">✳</div><div className="art-coordinate">06°20' N<br />05°37' E</div><div className="art-label art-label-bottom">CURIOUS BY NATURE<br />BUILDER BY PRACTICE</div>
         </div>
-        <div className="hero-bottom reveal">
-          <p>GODWIN ORIABURE<br /><span>WEB DEVELOPER · DIGITAL BUILDER</span></p>
-          <p className="hero-location">BASED IN NIGERIA <span>—</span> WORKING WORLDWIDE</p>
-          <a href="#about" className="scroll-cue"><span className="scroll-line" /> SCROLL TO EXPLORE</a>
-        </div>
-        <div className="hero-decoration" aria-hidden="true">GO<span>®</span></div>
+        <a className="hero-scroll" href="#about"><span className="scroll-wheel" /> SCROLL TO DISCOVER <span>↓</span></a>
       </section>
 
-      <div className="ticker" aria-label="Build, test, learn, repeat">
-        <div className="ticker-track">
-          {Array.from({ length: 4 }, (_, i) => <span key={i}>BUILD WITH INTENT <b>✳</b> TEST THE DETAILS <b>✳</b> KEEP MOVING <b>✳</b></span>)}
-        </div>
-      </div>
+      <section className="marquee-band" aria-label="Design and development"><div className="marquee-inner">{Array.from({ length: 4 }, (_, i) => <span key={i}>MAKE IT USEFUL <b>✳</b> MAKE IT FEEL RIGHT <b>✳</b> KEEP ITERATING <b>✳</b></span>)}</div></section>
 
-      <section className="section shell about-section" id="about">
-        <div className="section-head reveal"><span className="section-number">01 / ABOUT</span><span className="section-note">A LITTLE CONTEXT</span></div>
-        <div className="about-grid">
-          <h2 className="section-title reveal">MORE THAN<br />LINES OF <span className="orange-word">CODE.</span></h2>
-          <div className="about-copy reveal">
-            <p className="lead">I’m Godwin — a self-taught, project-driven web developer focused on turning ideas into useful digital products.</p>
-            <p>I enjoy working across the journey: understanding a problem, shaping a clear interface, connecting the pieces, and improving the result through testing and iteration.</p>
-            <p>My portfolio reflects work in progress as well as practical learning. I value honest communication, maintainable code, and shipping improvements that make a product easier to use.</p>
-            <div className="about-signature">Curiosity is the starting point. <span>Consistency does the rest.</span></div>
-          </div>
-        </div>
+      <section className="content-section page-width" id="about">
+        <div className="section-kicker"><span>01 / THE PERSON</span><span>ABOUT ME</span></div>
+        <div className="about-layout"><div><p className="mini-label">A DEVELOPER IN PROGRESS — BY DESIGN</p><h2 className="display-heading">I like the space<br />between <em>idea</em><br />and <span>execution.</span></h2></div><div className="about-detail"><p className="about-lead">The best part of building is watching a rough idea become something a real person can use.</p><p>I’m a self-taught, project-driven web developer based in Nigeria. I enjoy shaping clear interfaces, connecting application pieces, and improving the details through testing and iteration.</p><p>This portfolio is a snapshot of what I’m building and learning. I’m looking for opportunities to contribute, learn from a team, and grow through real product work.</p><a className="underlined-link" href="#experience">MY JOURNEY <span>↘</span></a></div></div>
+        <div className="principles-grid"><div><span>01</span><strong>Stay curious.</strong><p>Ask better questions and keep learning.</p></div><div><span>02</span><strong>Build with intent.</strong><p>Make choices that serve the user.</p></div><div><span>03</span><strong>Ship, then improve.</strong><p>Break big ideas into real steps.</p></div></div>
       </section>
 
-      <section className="section work-section" id="work">
-        <div className="shell">
-          <div className="section-head reveal"><span className="section-number">02 / SELECTED WORK</span><span className="section-note">IDEAS BECOMING PRODUCTS</span></div>
-          <div className="work-intro reveal"><h2 className="section-title">BUILT IN<br />PUBLIC<span className="orange-word">.</span></h2><p>A selection of ongoing builds and product experiments. Each project is a chance to learn, solve a real problem, and get better at the craft.</p></div>
-          <div className="project-list">
-            {projects.map((project) => (
-              <article className={`project-card ${project.className}`} key={project.number}>
-                <div className="project-visual">
-                  <div className="visual-top"><span>{project.number} / PROJECT</span><span>↗</span></div>
-                  <div className="visual-mark">{project.mark}<span>.</span></div>
-                  <div className="visual-grid" aria-hidden="true" />
-                  <div className="visual-caption">DIGITAL PRODUCT<br />STUDY — 2026</div>
-                </div>
-                <div className="project-info">
-                  <div className="project-type">{project.type}</div>
-                  <h3>{project.name}</h3>
-                  <p>{project.description}</p>
-                  <div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-                  <div className="project-foot"><span className="status"><i />{project.status}</span><a href={project.href} target="_blank" rel="noreferrer">VIEW REPOSITORY <span>↗</span></a></div>
-                </div>
-              </article>
-            ))}
-          </div>
-          <div className="work-foot reveal"><span>MORE BUILDS. MORE ITERATIONS.</span><a href="https://github.com/mrceogodwin" target="_blank" rel="noreferrer">EXPLORE MY GITHUB ↗</a></div>
-        </div>
-      </section>
+      <section className="work-section" id="work"><div className="page-width">
+        <div className="section-kicker"><span>02 / SELECTED PROJECTS</span><span>IN PROGRESS IS STILL PROGRESS</span></div>
+        <div className="section-intro-row"><h2 className="display-heading">A few things<br />I’m <em>building.</em></h2><p>Real project work, honest status, and the thinking behind each build. Select a project to explore its details.</p></div>
+        <div className="project-grid">{projects.map(project => <article className={"project-card " + project.theme} key={project.id}>
+          <button className="project-art" onClick={() => setActiveProject(activeProject === project.id ? null : project.id)} aria-expanded={activeProject === project.id} aria-label={"Show details for " + project.name}>
+            <div className="project-art-head"><span>PROJECT / {project.id}</span><span>{project.year} ↗</span></div><div className="project-glyph">{project.symbol}<span>.</span></div><div className="project-art-lines" /><div className="project-art-foot"><span>{project.category}</span><span>EXPLORE +</span></div>
+          </button>
+          <div className="project-body"><div className="project-name-row"><h3>{project.name}</h3><span className="project-status"><i />{project.status}</span></div><p>{project.description}</p><div className="project-tech">{project.stack.map(t => <span key={t}>{t}</span>)}</div>{activeProject === project.id && <div className="project-detail"><p>{project.detail}</p><a href={project.href} target="_blank" rel="noreferrer">OPEN SOURCE REPOSITORY ↗</a></div>}<div className="project-link-row"><span>CASE STUDY / BUILD NOTES</span><button onClick={() => setActiveProject(activeProject === project.id ? null : project.id)}>{activeProject === project.id ? "CLOSE −" : "VIEW DETAILS +"}</button></div></div>
+        </article>)}</div>
+        <div className="projects-footer"><span>MORE ITERATIONS. MORE TO COME.</span><a href="https://github.com/mrceogodwin" target="_blank" rel="noreferrer">ALL REPOSITORIES ON GITHUB ↗</a></div>
+      </div></section>
 
-      <section className="section shell skills-section" id="capabilities">
-        <div className="section-head reveal"><span className="section-number">03 / CAPABILITIES</span><span className="section-note">TOOLS ARE ONLY THE START</span></div>
-        <div className="skills-grid">
-          <div><h2 className="section-title reveal">HOW I<br /><span className="orange-word">CONTRIBUTE.</span></h2><p className="skills-intro reveal">I’m building depth through hands-on projects, careful debugging, and a habit of learning by doing.</p></div>
-          <div className="capability-list">
-            {capabilities.map(([number, title, detail]) => <div className="capability reveal" key={number}><span className="cap-number">{number}</span><div><h3>{title}</h3><p>{detail}</p></div><span className="cap-arrow">↗</span></div>)}
-          </div>
-        </div>
-        <div className="toolkit reveal"><span className="toolkit-label">CURRENT TOOLKIT</span><div className="tool-pills">{["React", "JavaScript", "APIs", "NestJS", "PHP", "Git / GitHub", "Vercel"].map((tool) => <span key={tool}>{tool}</span>)}</div></div>
-      </section>
+      <section className="services-section page-width" id="services"><div className="section-kicker"><span>03 / WHAT I CAN HELP WITH</span><span>CAPABILITIES</span></div><div className="services-layout"><h2 className="display-heading">Small details.<br /><em>Whole</em> experiences.</h2><div className="service-list">{services.map(([n, title, desc]) => <div className="service-row" key={n}><span className="service-number">{n}</span><div><h3>{title}</h3><p>{desc}</p></div><span className="service-arrow">↗</span></div>)}</div></div><div className="toolkit-strip"><span>TOOLS I’M WORKING WITH</span><div>{["React", "JavaScript", "APIs", "NestJS", "PHP", "GitHub", "Vercel"].map(t => <b key={t}>{t}</b>)}</div></div></section>
 
-      <section className="contact-section" id="contact">
-        <div className="shell">
-          <div className="section-head reveal"><span className="section-number">04 / NEXT CHAPTER</span><span className="section-note">OPEN TO REMOTE ROLES</span></div>
-          <div className="contact-main">
-            <p className="eyebrow reveal"><span className="tiny-square" /> LET’S MAKE SOMETHING USEFUL</p>
-            <h2 className="contact-title reveal">GOOD WORK<br />STARTS WITH<br /><span className="orange-word">A HELLO.</span></h2>
-            <div className="contact-side reveal"><p>Looking for a junior developer, a curious collaborator, or someone who enjoys building and improving digital products?</p><a className="contact-button" href="https://github.com/mrceogodwin" target="_blank" rel="noreferrer">CONNECT ON GITHUB <span>↗</span></a></div>
-          </div>
-          <div className="contact-bottom"><span>GODWIN ORIABURE © 2026</span><span>MADE WITH CURIOSITY <b>✳</b></span><a href="#top">BACK TO TOP ↑</a></div>
-        </div>
-      </section>
+      <section className="experience-section" id="experience"><div className="page-width"><div className="section-kicker"><span>04 / THE JOURNEY</span><span>EXPERIENCE & LEARNING</span></div><div className="section-intro-row"><h2 className="display-heading">Growing by<br /><em>doing.</em></h2><p>My focus is practical experience: building projects, learning tools, and improving my ability to deliver working software. This section intentionally avoids invented job titles or dates.</p></div><div className="timeline">{timeline.map(item => <div className="timeline-item" key={item.title}><div className="timeline-date">{item.date}</div><div className="timeline-marker"><span /></div><div className="timeline-content"><span>{item.kind}</span><h3>{item.title}</h3><p>{item.body}</p></div><span className="timeline-arrow">↗</span></div>)}</div><div className="resume-note"><div><span className="mini-label">YOUR NEXT HIRE?</span><h3>Let’s make good work<br />happen together.</h3></div><a className="button button-light" href="#contact">TALK ABOUT A ROLE ↗</a></div></div></section>
+
+      <section className="social-section page-width" id="socials"><div className="section-kicker"><span>05 / ELSEWHERE</span><span>FIND ME ONLINE</span></div><div className="social-heading"><h2 className="display-heading">Let’s connect<br /><em>outside the screen.</em></h2><p>GitHub is live. Add your personal profile links before publishing job applications.</p></div><div className="social-grid">{socials.map(s => <a className={"social-card " + (!s.href ? "social-placeholder" : "")} href={s.href || "#contact"} key={s.name} target={s.href ? "_blank" : undefined} rel={s.href ? "noreferrer" : undefined} onClick={!s.href ? (e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({behavior:"smooth"}); } : undefined}><span className="social-icon">{s.icon}</span><span><strong>{s.name}</strong><small>{s.handle}</small></span><span className="social-arrow">↗</span></a>)}</div></section>
+
+      <section className="contact-section" id="contact"><div className="page-width"><div className="section-kicker"><span>06 / START A CONVERSATION</span><span>CONTACT</span></div><div className="contact-layout"><div className="contact-copy"><p className="mini-label">AVAILABLE FOR REMOTE OPPORTUNITIES</p><h2 className="display-heading">Have a good<br /><em>one in mind?</em></h2><p>Tell me about the role, project, or idea. I’m happy to connect and see whether I can help.</p><button className="email-copy" type="button" onClick={copyEmail}>hello@designbygodwin.com <span>{copied ? "COPIED ✓" : "COPY EMAIL +"}</span></button><p className="contact-note">Note: replace this placeholder email with your real contact address before launch.</p></div><ContactForm /></div><div className="contact-bottom"><a className="brand" href="#top"><span className="brand-icon">g<span>.</span></span><span className="brand-name">GODWIN<br /><small>WEB DEVELOPER</small></span></a><span>DESIGNED WITH INTENT · BUILT WITH CURIOSITY</span><a href="#top">BACK TO TOP ↑</a></div></div></section>
     </main>
   );
+}
+
+function ContactForm() {
+  const [form, setForm] = useState({ name: "", email: "", topic: "Job opportunity", message: "" });
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+  function update(field: keyof typeof form, value: string) { setForm(old => ({ ...old, [field]: value })); }
+  function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError("");
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) { setError("Please complete all required fields."); return; }
+    const subject = encodeURIComponent(form.topic + " — message from " + form.name);
+    const body = encodeURIComponent("Name: " + form.name + "\nEmail: " + form.email + "\nTopic: " + form.topic + "\n\n" + form.message);
+    window.location.href = "mailto:hello@designbygodwin.com?subject=" + subject + "&body=" + body;
+    setSent(true);
+  }
+  return <form className="contact-form" onSubmit={submit}><div className="form-heading"><span>CONTACT FORM / 01</span><span>✳</span></div><label>Your name<input value={form.name} onChange={e => update("name", e.target.value)} placeholder="What should I call you?" required /></label><label>Email address<input type="email" value={form.email} onChange={e => update("email", e.target.value)} placeholder="you@company.com" required /></label><label>What’s this about?<select value={form.topic} onChange={e => update("topic", e.target.value)}><option>Job opportunity</option><option>Freelance project</option><option>Collaboration</option><option>Just saying hello</option></select></label><label>Your message<textarea value={form.message} onChange={e => update("message", e.target.value)} placeholder="Tell me a little about it..." rows={4} required /></label>{error && <p className="form-error">{error}</p>}{sent && <p className="form-success">Your email app should open with this message. If it didn’t, email setup is still needed.</p>}<button className="button button-dark form-submit" type="submit">PREPARE MESSAGE <span>↗</span></button><p className="form-privacy">This form opens your email app; it does not store or send messages to a database.</p></form>;
 }
