@@ -3,12 +3,13 @@
 A premium, responsive developer portfolio built with Next.js App Router, React, TypeScript, and custom CSS.
 
 ## Features
-- Editorial dark-and-light visual system with restrained orange accents
+- Editorial light-and-dark visual system with restrained orange accents
 - Responsive desktop, tablet, and mobile layout
 - CSS motion with reduced-motion support
 - Project cards linking to source repositories
-- Search and social-sharing metadata
-- No database required for the current static portfolio
+- Contact form saved to a separate Neon PostgreSQL database
+- Private owner login at `/admin/login` and protected message dashboard at `/admin`
+- Signed, HTTP-only owner session cookie and logout
 
 ## Run locally
 
@@ -18,6 +19,19 @@ npm run dev
 ```
 
 Open http://localhost:3000.
+
+## Owner dashboard configuration
+
+Set these server-side environment variables in Vercel Project Settings → Environment Variables (Production, and Preview only if you want to test there):
+
+- `DATABASE_URL`: the connection string for the dedicated Godmode Neon database
+- `ADMIN_EMAIL`: the email address used to sign in as the owner
+- `ADMIN_PASSWORD`: a long, unique owner password
+- `AUTH_SECRET`: a unique random secret of at least 32 characters used to sign the session cookie
+
+Keep these values private. Do not commit real values to GitHub or expose them as `NEXT_PUBLIC_*` variables. After setting or changing them, redeploy the relevant Vercel environment.
+
+Sign in at `/admin/login`. Only the configured owner credentials can sign in; there is no public registration route. The dashboard lists the 100 latest contact messages. Email notifications are not yet connected.
 
 ## Production build
 
