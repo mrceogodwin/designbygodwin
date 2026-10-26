@@ -30,15 +30,6 @@ const socials = [
 export default function Home() {
   const [activeProject, setActiveProject] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  function copyEmail() {
-    void navigator.clipboard?.writeText("hello@designbygodwin.com").then(() => {
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1800);
-    });
-  }
-
   return (
     <main id="top">
       <header className="nav-wrap">
@@ -90,7 +81,7 @@ export default function Home() {
 
       <section className="social-section page-width" id="socials"><div className="section-kicker"><span>05 / ELSEWHERE</span><span>FIND ME ONLINE</span></div><div className="social-heading"><h2 className="display-heading">Let’s connect<br /><em>outside the screen.</em></h2><p>GitHub is live. Add your personal profile links before publishing job applications.</p></div><div className="social-grid">{socials.map(s => <a className={"social-card " + (!s.href ? "social-placeholder" : "")} href={s.href || "#contact"} key={s.name} target={s.href ? "_blank" : undefined} rel={s.href ? "noreferrer" : undefined} onClick={!s.href ? (e) => { e.preventDefault(); document.getElementById("contact")?.scrollIntoView({behavior:"smooth"}); } : undefined}><span className="social-icon">{s.icon}</span><span><strong>{s.name}</strong><small>{s.handle}</small></span><span className="social-arrow">↗</span></a>)}</div></section>
 
-      <section className="contact-section" id="contact"><div className="page-width"><div className="section-kicker"><span>06 / START A CONVERSATION</span><span>CONTACT</span></div><div className="contact-layout"><div className="contact-copy"><p className="mini-label">AVAILABLE FOR REMOTE OPPORTUNITIES</p><h2 className="display-heading">Have a good<br /><em>one in mind?</em></h2><p>Tell me about the role, project, or idea. I’m happy to connect and see whether I can help.</p><button className="email-copy" type="button" onClick={copyEmail}>hello@designbygodwin.com <span>{copied ? "COPIED ✓" : "COPY EMAIL +"}</span></button><p className="contact-note">Note: replace this placeholder email with your real contact address before launch.</p></div><ContactForm /></div><div className="contact-bottom"><a className="brand" href="#top"><span className="brand-icon">g<span>.</span></span><span className="brand-name">GODWIN<br /><small>WEB DEVELOPER</small></span></a><span>DESIGNED WITH INTENT · BUILT WITH CURIOSITY</span><a href="#top">BACK TO TOP ↑</a></div></div></section>
+      <section className="contact-section" id="contact"><div className="page-width"><div className="section-kicker"><span>06 / START A CONVERSATION</span><span>CONTACT</span></div><div className="contact-layout"><div className="contact-copy"><p className="mini-label">AVAILABLE FOR REMOTE OPPORTUNITIES</p><h2 className="display-heading">Have a good<br /><em>one in mind?</em></h2><p>Tell me about the role, project, or idea. I’m happy to connect and see whether I can help.</p><a className="email-copy" href="https://github.com/mrceogodwin" target="_blank" rel="noreferrer">Connect through GitHub <span>OPEN PROFILE ↗</span></a><p className="contact-note">Direct email contact can be added once your preferred professional email is confirmed.</p></div><ContactForm /></div><div className="contact-bottom"><a className="brand" href="#top"><span className="brand-icon">g<span>.</span></span><span className="brand-name">GODWIN<br /><small>WEB DEVELOPER</small></span></a><span>DESIGNED WITH INTENT · BUILT WITH CURIOSITY</span><a href="#top">BACK TO TOP ↑</a></div></div></section>
     </main>
   );
 }
@@ -98,16 +89,29 @@ export default function Home() {
 function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", topic: "Job opportunity", message: "" });
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   function update(field: keyof typeof form, value: string) { setForm(old => ({ ...old, [field]: value })); }
-  function submit(e: React.FormEvent<HTMLFormElement>) {
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
-    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) { setError("Please complete all required fields."); return; }
-    const subject = encodeURIComponent(form.topic + " — message from " + form.name);
-    const body = encodeURIComponent("Name: " + form.name + "\nEmail: " + form.email + "\nTopic: " + form.topic + "\n\n" + form.message);
-    window.location.href = "mailto:hello@designbygodwin.com?subject=" + subject + "&body=" + body;
-    setSent(true);
+    setSent(false);
+    setSubmitting(true);
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const result = await response.json() as { ok?: boolean; error?: string };
+      if (!response.ok) throw new Error(result.error || "Could not send your message. Please try again.");
+      setSent(true);
+      setForm({ name: "", email: "", topic: "Job opportunity", message: "" });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not send your message. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
-  return <form className="contact-form" onSubmit={submit}><div className="form-heading"><span>CONTACT FORM / 01</span><span>✳</span></div><label>Your name<input value={form.name} onChange={e => update("name", e.target.value)} placeholder="What should I call you?" required /></label><label>Email address<input type="email" value={form.email} onChange={e => update("email", e.target.value)} placeholder="you@company.com" required /></label><label>What’s this about?<select value={form.topic} onChange={e => update("topic", e.target.value)}><option>Job opportunity</option><option>Freelance project</option><option>Collaboration</option><option>Just saying hello</option></select></label><label>Your message<textarea value={form.message} onChange={e => update("message", e.target.value)} placeholder="Tell me a little about it..." rows={4} required /></label>{error && <p className="form-error">{error}</p>}{sent && <p className="form-success">Your email app should open with this message. If it didn’t, email setup is still needed.</p>}<button className="button button-dark form-submit" type="submit">PREPARE MESSAGE <span>↗</span></button><p className="form-privacy">This form opens your email app; it does not store or send messages to a database.</p></form>;
+  return <form className="contact-form" onSubmit={submit}><div className="form-heading"><span>CONTACT FORM / 01</span><span>✳</span></div><label>Your name<input value={form.name} onChange={e => update("name", e.target.value)} placeholder="What should I call you?" maxLength={120} required /></label><label>Email address<input type="email" value={form.email} onChange={e => update("email", e.target.value)} placeholder="you@company.com" maxLength={254} required /></label><label>What’s this about?<select value={form.topic} onChange={e => update("topic", e.target.value)}><option>Job opportunity</option><option>Freelance project</option><option>Collaboration</option><option>Just saying hello</option></select></label><label>Your message<textarea value={form.message} onChange={e => update("message", e.target.value)} placeholder="Tell me a little about it..." rows={4} maxLength={5000} required /></label>{error && <p className="form-error">{error}</p>}{sent && <p className="form-success">Thanks — your message has been saved. I’ll be in touch.</p>}<button className="button button-dark form-submit" type="submit" disabled={submitting}>{submitting ? "SENDING..." : "SEND MESSAGE"} <span>↗</span></button><p className="form-privacy">Messages are stored in the portfolio database. Please avoid sending sensitive personal information.</p></form>;
 }
