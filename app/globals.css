@@ -75,3 +75,6 @@
     margin-top:5px;
   }
 }
+
+/* Contact-form honeypot: accessible to automated checks, not visible or focusable to visitors */
+.contact-honeypot{position:absolute!important;left:-10000px!important;top:auto!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}
