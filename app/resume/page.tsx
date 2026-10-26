@@ -3,7 +3,7 @@ import ResumeActions from "./resume-actions";
 
 export const metadata: Metadata = {
   title: "Resume — Godwin Oriabure",
-  description: "Project-focused web developer resume for Godwin Oriabure.",
+  description: "Project-focused web developer resume for Godwin Oriabure, with selected projects, technical toolkit, and print-ready layout.",
 };
 
 const projects = [
