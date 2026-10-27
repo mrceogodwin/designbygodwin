@@ -39,6 +39,9 @@ export async function POST(request: Request) {
   let payload: ContactPayload;
   try { payload = (await request.json()) as ContactPayload; }
   catch { return NextResponse.json({ error: "Please send a valid form submission." }, { status: 400 }); }
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return NextResponse.json({ error: "Please send a valid form submission." }, { status: 400 });
+  }
   if (typeof payload.website === "string" && payload.website.trim()) return NextResponse.json({ ok: true }, { status: 201 });
   const name = typeof payload.name === "string" ? payload.name.trim() : "";
   const email = typeof payload.email === "string" ? payload.email.trim().toLowerCase() : "";
