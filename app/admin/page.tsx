@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getAdminSession } from "@/lib/admin-auth";
 import MessagesList from "./messages-list";
+import SiteContentEditor from "./site-content-editor";
 
 export const dynamic = "force-dynamic";
 type PortfolioMessage = { id: number; name: string; email: string; topic: string; message: string; created_at: string | Date };
@@ -35,6 +36,7 @@ export default async function AdminDashboardPage() {
         <p style={{ color: "#d94e2e", fontSize: 11, fontWeight: 700, letterSpacing: ".18em" }}>PRIVATE WORKSPACE / OVERVIEW</p>
         <h1 style={{ fontSize: "clamp(38px, 6vw, 64px)", letterSpacing: "-.065em", lineHeight: 1, margin: "14px 0" }}>Your inbox<span style={{ color: "#ff6844" }}>.</span></h1>
         <p style={{ ...muted, fontSize: 15, marginBottom: 28 }}>Portfolio contact messages, saved securely for you to review.</p>
+        <SiteContentEditor />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 14, marginBottom: 24 }}>
           <div style={panel}><p style={{ ...muted, marginTop: 0 }}>TOTAL MESSAGES LOADED</p><strong style={{ fontSize: 38, letterSpacing: "-.05em" }}>{messages.length}</strong><p style={muted}>Showing up to 100 latest messages</p></div>
           <div style={panel}><p style={{ ...muted, marginTop: 0 }}>EMAIL NOTIFICATIONS</p><strong style={{ fontSize: 21 }}>{emailNotificationsConfigured ? "Configured" : "Setup required"}</strong><p style={muted}>{emailNotificationsConfigured ? "Provider credentials are present; delivery still needs a live test." : "Add BREVO_API_KEY and a verified BREVO_SENDER_EMAIL in Vercel to enable alerts."}</p></div>

@@ -25,7 +25,29 @@ const socials = [
   { name: "Get in touch", handle: "Jobs · projects · collaborations", href: "#contact", icon: "↗", external: false },
 ];
 
+type EditableProject = { name: string; description: string; url: string; status: string };
+type EditableContent = { intro: string; aboutLead: string; aboutBody: string; projects: EditableProject[] };
+
 export default function Home() {
+  const [siteContent, setSiteContent] = useState<EditableContent | null>(null);
+  useEffect(() => {
+    fetch("/api/admin/content").then(async (response) => {
+      if (!response.ok) return;
+      const data = await response.json();
+      const value: unknown = data.content;
+      if (!value || typeof value !== "object" || Array.isArray(value)) return;
+      const candidate = value as Record<string, unknown>;
+      if (!["intro", "aboutLead", "aboutBody"].every((key) => typeof candidate[key] === "string")) return;
+      if (!Array.isArray(candidate.projects) || candidate.projects.length !== 3) return;
+      const validProjects = candidate.projects.every((item) => {
+        if (!item || typeof item !== "object" || Array.isArray(item)) return false;
+        const project = item as Record<string, unknown>;
+        if (!["name", "description", "url", "status"].every((key) => typeof project[key] === "string")) return false;
+        try { return new URL(project.url as string).protocol === "https:"; } catch { return false; }
+      });
+      if (validProjects) setSiteContent(value as EditableContent);
+    }).catch(() => {});
+  }, []);
   const [activeProject, setActiveProject] = useState<string | null>(null);
   const [typedHeadline, setTypedHeadline] = useState("momentum.");
   useEffect(() => {
@@ -69,7 +91,7 @@ export default function Home() {
         <div className="hero-copy">
           <div className="eyebrow"><span className="eyebrow-line" /> INDEPENDENT WEB DEVELOPER <span className="eyebrow-year">PORTFOLIO / 2026</span></div>
           <h1>Digital ideas.<br /><span className="serif-word">Real</span> <span className="outlined-word typewriter-word">{typedHeadline}<span className="typing-cursor" aria-hidden="true">|</span></span></h1>
-          <p className="hero-intro">I’m Godwin — a self-taught developer building web experiences and digital products through curiosity, craft, and hands-on projects.</p>
+          <p className="hero-intro">{siteContent?.intro || "I’m Godwin — a self-taught developer building web experiences and digital products through curiosity, craft, and hands-on projects."}</p>
           <div className="hero-actions"><a className="button button-dark" href="#work">EXPLORE MY WORK <span>↘</span></a><a className="button button-quiet" href="#contact">LET’S CONNECT <span>↗</span></a></div>
           <div className="hero-stats"><div><strong>03</strong><span>FEATURED BUILDS</span></div><div><strong>∞</strong><span>THINGS TO LEARN</span></div><div><strong>NG</strong><span>BASED IN NIGERIA</span></div></div>
         </div>
@@ -83,19 +105,19 @@ export default function Home() {
 
       <section className="content-section page-width" id="about">
         <div className="section-kicker"><span>01 / THE PERSON</span><span>ABOUT ME</span></div>
-        <div className="about-layout"><div><p className="mini-label">A DEVELOPER IN PROGRESS — BY DESIGN</p><h2 className="display-heading">I like the space<br />between <em>idea</em><br />and <span>execution.</span></h2></div><div className="about-detail"><p className="about-lead">The best part of building is watching a rough idea become something a real person can use.</p><p>I’m a self-taught, project-driven web developer based in Nigeria. I enjoy shaping clear interfaces, connecting application pieces, and improving the details through testing and iteration.</p><p>This portfolio is a snapshot of what I’m building and learning. I’m looking for opportunities to contribute, learn from a team, and grow through real product work.</p><a className="underlined-link" href="#experience">MY JOURNEY <span>↘</span></a></div></div>
+        <div className="about-layout"><div><p className="mini-label">A DEVELOPER IN PROGRESS — BY DESIGN</p><h2 className="display-heading">I like the space<br />between <em>idea</em><br />and <span>execution.</span></h2></div><div className="about-detail"><p className="about-lead">{siteContent?.aboutLead || "The best part of building is watching a rough idea become something a real person can use."}</p><p>{siteContent?.aboutBody || "I’m a self-taught, project-driven web developer based in Nigeria. I enjoy shaping clear interfaces, connecting application pieces, and improving the details through testing and iteration."}</p><p>This portfolio is a snapshot of what I’m building and learning. I’m looking for opportunities to contribute, learn from a team, and grow through real product work.</p><a className="underlined-link" href="#experience">MY JOURNEY <span>↘</span></a></div></div>
         <div className="principles-grid"><div><span>01</span><strong>Stay curious.</strong><p>Ask better questions and keep learning.</p></div><div><span>02</span><strong>Build with intent.</strong><p>Make choices that serve the user.</p></div><div><span>03</span><strong>Ship, then improve.</strong><p>Break big ideas into real steps.</p></div></div>
       </section>
 
       <section className="work-section" id="work"><div className="page-width">
         <div className="section-kicker"><span>02 / SELECTED PROJECTS</span><span>IN PROGRESS IS STILL PROGRESS</span></div>
         <div className="section-intro-row"><h2 className="display-heading">A few things<br />I’m <em>building.</em></h2><p>Real project work, honest status, and the thinking behind each build. Open a repository or expand the build notes.</p></div>
-        <div className="project-grid">{projects.map(project => <article className={"project-card " + project.theme} key={project.id}>
-          <a className="project-art" href={project.href} target="_blank" rel="noreferrer" aria-label={"Open " + project.name + " source repository in a new tab"}>
+        <div className="project-grid">{projects.map((project, index) => { const editable = siteContent?.projects?.[index]; const projectName = editable?.name || project.name; const projectDescription = editable?.description || project.description; const projectHref = editable?.url || project.href; const projectStatus = editable?.status || project.status; return <article className={"project-card " + project.theme} key={project.id}>
+          <a className="project-art" href={projectHref} target="_blank" rel="noreferrer" aria-label={"Open " + projectName + " project in a new tab"}>
             <div className="project-art-head"><span>PROJECT / {project.id}</span><span>{project.year} ↗</span></div><div className="project-glyph">{project.symbol}<span>.</span></div><div className="project-art-lines" /><div className="project-art-foot"><span>{project.category}</span><span>OPEN PROJECT ↗</span></div>
           </a>
-          <div className="project-body"><div className="project-name-row"><h3><a href={project.href} target="_blank" rel="noreferrer" aria-label={"Open " + project.name + " repository"}>{project.name} ↗</a></h3><span className="project-status"><i />{project.status}</span></div><p>{project.description}</p><div className="project-tech">{project.stack.map(t => <span key={t}>{t}</span>)}</div>{activeProject === project.id && <div className="project-detail"><p>{project.detail}</p><a href={project.repo} target="_blank" rel="noreferrer">VIEW SOURCE REPOSITORY ↗</a></div>}<div className="project-link-row"><span>CASE STUDY / BUILD NOTES</span><button onClick={() => setActiveProject(activeProject === project.id ? null : project.id)}>{activeProject === project.id ? "CLOSE −" : "VIEW DETAILS +"}</button></div></div>
-        </article>)}</div>
+          <div className="project-body"><div className="project-name-row"><h3><a href={projectHref} target="_blank" rel="noreferrer" aria-label={"Open " + projectName + " project"}>{projectName} ↗</a></h3><span className="project-status"><i />{projectStatus}</span></div><p>{projectDescription}</p><div className="project-tech">{project.stack.map(t => <span key={t}>{t}</span>)}</div>{activeProject === project.id && <div className="project-detail"><p>{project.detail}</p><a href={project.repo} target="_blank" rel="noreferrer">VIEW SOURCE REPOSITORY ↗</a></div>}<div className="project-link-row"><span>CASE STUDY / BUILD NOTES</span><button onClick={() => setActiveProject(activeProject === project.id ? null : project.id)}>{activeProject === project.id ? "CLOSE −" : "VIEW DETAILS +"}</button></div></div>
+        </article>; })}</div>
         <div className="projects-footer"><span>MORE ITERATIONS. MORE TO COME.</span><a href="https://github.com/mrceogodwin" target="_blank" rel="noreferrer">ALL REPOSITORIES ON GITHUB ↗</a></div>
       </div></section>
 
