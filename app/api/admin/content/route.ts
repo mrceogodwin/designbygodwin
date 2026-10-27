@@ -15,17 +15,13 @@ const defaults = {
   ]
 };
 
-async function ensureContentTable(sql: ReturnType<typeof neon>) {
-  await sql`CREATE TABLE IF NOT EXISTS portfolio_site_content (id INTEGER PRIMARY KEY CHECK (id = 1), content JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
-}
-
 export async function GET() {
   if (!process.env.DATABASE_URL) {
     return NextResponse.json({ error: "DATABASE_URL is not configured." }, { status: 503 });
   }
   try {
     const sql = neon(process.env.DATABASE_URL);
-    await ensureContentTable(sql);
+    await sql`CREATE TABLE IF NOT EXISTS portfolio_site_content (id INTEGER PRIMARY KEY CHECK (id = 1), content JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
     const rows = await sql`SELECT content FROM portfolio_site_content WHERE id = 1 LIMIT 1`;
     return NextResponse.json({ content: rows[0]?.content ?? defaults });
   } catch {
@@ -83,7 +79,7 @@ export async function PUT(request: Request) {
   const content = { intro: value.intro, aboutLead: value.aboutLead, aboutBody: value.aboutBody, projects };
   try {
     const sql = neon(process.env.DATABASE_URL);
-    await ensureContentTable(sql);
+    await sql`CREATE TABLE IF NOT EXISTS portfolio_site_content (id INTEGER PRIMARY KEY CHECK (id = 1), content JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
     await sql`INSERT INTO portfolio_site_content (id, content, updated_at) VALUES (1, ${JSON.stringify(content)}::jsonb, NOW()) ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, updated_at = NOW()`;
     return NextResponse.json({ ok: true });
   } catch {
