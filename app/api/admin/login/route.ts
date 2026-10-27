@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Enter your email and password." }, { status: 400 });
   }
 
-  if (typeof payload.email !== "string" || typeof payload.password !== "string") {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload) || typeof payload.email !== "string" || typeof payload.password !== "string") {
     return NextResponse.json({ error: "Enter your email and password." }, { status: 400 });
   }
 
