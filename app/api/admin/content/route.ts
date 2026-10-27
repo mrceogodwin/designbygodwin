@@ -12,13 +12,13 @@ function jsonNoStore(data: unknown, init?: ResponseInit) {
 }
 
 const defaults = {
-  intro: "Designer and developer building thoughtful digital experiences.",
-  aboutLead: "I turn ideas into useful digital products.",
-  aboutBody: "I work across design, web development, and digital strategy to create clear, polished experiences.",
+  intro: "I’m Godwin — a self-taught developer building web experiences and digital products through curiosity, craft, and hands-on projects.",
+  aboutLead: "The best part of building is watching a rough idea become something a real person can use.",
+  aboutBody: "I’m a self-taught, project-driven web developer based in Nigeria. I enjoy shaping clear interfaces, connecting application pieces, and improving the details through testing and iteration.",
   projects: [
-    { name: "VIBR.NG", description: "A platform connecting African founders and investors.", url: "https://vibr.ng", status: "In development" },
-    { name: "STACKS.NG", description: "A marketplace for useful software and digital tools.", url: "https://stacks.ng", status: "In development" },
-    { name: "Kilode", description: "An entertainment and culture publishing platform.", url: "https://kilode.com.ng", status: "In development" }
+    { name: "VIBR.NG", description: "A founder and creator network concept designed to help builders share what they are making and connect with potential investors.", url: "https://github.com/mrceogodwin/vibr", status: "IN DEVELOPMENT" },
+    { name: "STACKS.NG", description: "A marketplace concept for practical software, plugins, and online tools, with an emphasis on a clear product discovery experience.", url: "https://github.com/mrceogodwin/stacks", status: "IN DEVELOPMENT" },
+    { name: "KILODE", description: "A digital media project exploring modern publishing, entertainment, and culture-focused web experiences.", url: "https://kilode.com.ng", status: "ONGOING BUILD" }
   ]
 };
 
