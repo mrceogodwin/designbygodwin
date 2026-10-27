@@ -65,8 +65,24 @@ export default function SiteContentEditor() {
   }
 
   async function save() {
-    setSaving(true);
     setNotice("");
+    if ([content.intro, content.aboutLead, content.aboutBody].some((value) => value.length > 4000)) {
+      setNotice("Each main text field must be 4,000 characters or fewer.");
+      return;
+    }
+    for (const project of content.projects) {
+      if ([project.name, project.description, project.url, project.status].some((value) => value.length > 1000)) {
+        setNotice("Each project field must be 1,000 characters or fewer.");
+        return;
+      }
+      try {
+        if (new URL(project.url).protocol !== "https:") throw new Error("HTTPS required");
+      } catch {
+        setNotice("Each project link must be a valid HTTPS URL.");
+        return;
+      }
+    }
+    setSaving(true);
     try {
       const response = await fetch("/api/admin/content", {
         method: "PUT",
@@ -90,13 +106,13 @@ export default function SiteContentEditor() {
     <h2 style={{ fontSize: 30, letterSpacing: "-.05em", margin: "8px 0" }}>Edit your website</h2>
     <p style={{ color: "#77766e", fontSize: 13 }}>Changes are saved to the database, not the source code. Review all text and links before saving.</p>
     {loading ? <p>Loading saved content…</p> : <div style={{ display: "grid", gap: 16 }}>
-      <div><label style={label}>HERO INTRO</label><textarea style={field} rows={2} value={content.intro} onChange={(e) => update("intro", e.target.value)} /></div>
-      <div><label style={label}>ABOUT — LEAD</label><textarea style={field} rows={2} value={content.aboutLead} onChange={(e) => update("aboutLead", e.target.value)} /></div>
-      <div><label style={label}>ABOUT — BODY</label><textarea style={field} rows={4} value={content.aboutBody} onChange={(e) => update("aboutBody", e.target.value)} /></div>
+      <div><label style={label}>HERO INTRO</label><textarea style={field} rows={2} maxLength={4000} value={content.intro} onChange={(e) => update("intro", e.target.value)} /></div>
+      <div><label style={label}>ABOUT — LEAD</label><textarea style={field} rows={2} maxLength={4000} value={content.aboutLead} onChange={(e) => update("aboutLead", e.target.value)} /></div>
+      <div><label style={label}>ABOUT — BODY</label><textarea style={field} rows={4} maxLength={4000} value={content.aboutBody} onChange={(e) => update("aboutBody", e.target.value)} /></div>
       <h3 style={{ margin: "4px 0 0" }}>Featured projects</h3>
       {content.projects.map((project, index) => <div key={index} style={{ border: "1px solid #e2ddd2", borderRadius: 12, padding: 14, display: "grid", gap: 10 }}>
         <strong>Project {index + 1}</strong>
-        {(["name", "description", "url", "status"] as const).map((key) => <label key={key} style={label}>{key.toUpperCase()}<input style={field} value={project[key]} onChange={(e) => update("projects", content.projects.map((item, i) => i === index ? { ...item, [key]: e.target.value } : item))} /></label>)}
+        {(["name", "description", "url", "status"] as const).map((key) => <label key={key} style={label}>{key.toUpperCase()}<input style={field} maxLength={1000} value={project[key]} onChange={(e) => update("projects", content.projects.map((item, i) => i === index ? { ...item, [key]: e.target.value } : item))} /></label>)}
       </div>)}
       <button onClick={save} disabled={saving || loading || loadFailed} style={{ justifySelf: "start", border: 0, borderRadius: 999, background: "#171713", color: "white", padding: "13px 20px", fontWeight: 700, cursor: saving || loadFailed ? "not-allowed" : "pointer" }}>{saving ? "SAVING…" : loadFailed ? "SAVING DISABLED — LOAD ERROR" : "SAVE WEBSITE CONTENT ↗"}</button>
       {notice ? <p role="status" style={{ fontSize: 13, color: notice.startsWith("Saved") ? "#237447" : "#9c3020" }}>{notice}</p> : null}
