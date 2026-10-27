@@ -24,6 +24,7 @@ const defaults: SiteContent = {
 export default function SiteContentEditor() {
   const [content, setContent] = useState<SiteContent>(defaults);
   const [loading, setLoading] = useState(true);
+  const [loadFailed, setLoadFailed] = useState(false);
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState("");
 
@@ -32,9 +33,13 @@ export default function SiteContentEditor() {
       .then(async (response) => {
         if (!response.ok) throw new Error("Could not load saved content.");
         const data = await response.json();
-        if (data.content) setContent({ ...defaults, ...data.content });
+        if (!data.content || typeof data.content !== "object") throw new Error("Saved content response was invalid.");
+        setContent({ ...defaults, ...data.content });
       })
-      .catch(() => setNotice("Showing starter content. Save after checking every field."))
+      .catch(() => {
+        setLoadFailed(true);
+        setNotice("Saved content could not be loaded. Saving is disabled to protect existing content. Check the database connection and reload.");
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -76,7 +81,7 @@ export default function SiteContentEditor() {
         <strong>Project {index + 1}</strong>
         {(["name", "description", "url", "status"] as const).map((key) => <label key={key} style={label}>{key.toUpperCase()}<input style={field} value={project[key]} onChange={(e) => update("projects", content.projects.map((item, i) => i === index ? { ...item, [key]: e.target.value } : item))} /></label>)}
       </div>)}
-      <button onClick={save} disabled={saving} style={{ justifySelf: "start", border: 0, borderRadius: 999, background: "#171713", color: "white", padding: "13px 20px", fontWeight: 700, cursor: saving ? "wait" : "pointer" }}>{saving ? "SAVING…" : "SAVE WEBSITE CONTENT ↗"}</button>
+      <button onClick={save} disabled={saving || loading || loadFailed} style={{ justifySelf: "start", border: 0, borderRadius: 999, background: "#171713", color: "white", padding: "13px 20px", fontWeight: 700, cursor: saving || loadFailed ? "not-allowed" : "pointer" }}>{saving ? "SAVING…" : loadFailed ? "SAVING DISABLED — LOAD ERROR" : "SAVE WEBSITE CONTENT ↗"}</button>
       {notice ? <p role="status" style={{ fontSize: 13, color: notice.startsWith("Saved") ? "#237447" : "#9c3020" }}>{notice}</p> : null}
     </div>}
   </section>;
