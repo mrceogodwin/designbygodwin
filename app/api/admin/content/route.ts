@@ -1,0 +1,85 @@
+import { neon } from "@neondatabase/serverless";
+import { NextResponse } from "next/server";
+import { getAdminSession } from "@/lib/admin-auth";
+
+export const dynamic = "force-dynamic";
+
+const defaults = {
+  intro: "Designer and developer building thoughtful digital experiences.",
+  aboutLead: "I turn ideas into useful digital products.",
+  aboutBody: "I work across design, web development, and digital strategy to create clear, polished experiences.",
+  projects: [
+    { name: "VIBR.NG", description: "A platform connecting African founders and investors.", url: "https://vibr.ng", status: "In development" },
+    { name: "STACKS.NG", description: "A marketplace for useful software and digital tools.", url: "https://stacks.ng", status: "In development" },
+    { name: "Kilode", description: "An entertainment and culture publishing platform.", url: "https://kilode.com.ng", status: "In development" }
+  ]
+};
+
+export async function GET() {
+  if (!process.env.DATABASE_URL) return NextResponse.json({ content: defaults });
+  try {
+    const sql = neon(process.env.DATABASE_URL);
+    const rows = await sql`SELECT content FROM portfolio_site_content WHERE id = 1 LIMIT 1`;
+    return NextResponse.json({ content: rows[0]?.content ?? defaults });
+  } catch {
+    return NextResponse.json({ content: defaults });
+  }
+}
+
+export async function PUT(request: Request) {
+  if (!(await getAdminSession())) {
+    return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  }
+  if (!process.env.DATABASE_URL) {
+    return NextResponse.json({ error: "DATABASE_URL is not configured." }, { status: 503 });
+  }
+
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
+  }
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: "Invalid content payload." }, { status: 400 });
+  }
+  const value = body as Record<string, unknown>;
+  const textFields = ["intro", "aboutLead", "aboutBody"] as const;
+  for (const key of textFields) {
+    if (typeof value[key] !== "string" || value[key].length > 4000) {
+      return NextResponse.json({ error: `Invalid ${key} field (maximum 4,000 characters).` }, { status: 400 });
+    }
+  }
+  if (!Array.isArray(value.projects) || value.projects.length !== 3) {
+    return NextResponse.json({ error: "Exactly three featured projects are required." }, { status: 400 });
+  }
+  const projects = [];
+  for (const item of value.projects) {
+    if (!item || typeof item !== "object" || Array.isArray(item)) {
+      return NextResponse.json({ error: "Invalid project entry." }, { status: 400 });
+    }
+    const project = item as Record<string, unknown>;
+    for (const key of ["name", "description", "url", "status"]) {
+      if (typeof project[key] !== "string" || project[key].length > 1000) {
+        return NextResponse.json({ error: `Invalid project ${key} field.` }, { status: 400 });
+      }
+    }
+    try {
+      const url = new URL(project.url as string);
+      if (url.protocol !== "https:") throw new Error("HTTPS required");
+    } catch {
+      return NextResponse.json({ error: "Project links must be valid HTTPS URLs." }, { status: 400 });
+    }
+    projects.push({ name: project.name, description: project.description, url: project.url, status: project.status });
+  }
+
+  const content = { intro: value.intro, aboutLead: value.aboutLead, aboutBody: value.aboutBody, projects };
+  try {
+    const sql = neon(process.env.DATABASE_URL);
+    await sql`CREATE TABLE IF NOT EXISTS portfolio_site_content (id INTEGER PRIMARY KEY CHECK (id = 1), content JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
+    await sql`INSERT INTO portfolio_site_content (id, content, updated_at) VALUES (1, ${JSON.stringify(content)}::jsonb, NOW()) ON CONFLICT (id) DO UPDATE SET content = EXCLUDED.content, updated_at = NOW()`;
+    return NextResponse.json({ ok: true });
+  } catch {
+    return NextResponse.json({ error: "Could not save content. Check the database permissions." }, { status: 500 });
+  }
+}
