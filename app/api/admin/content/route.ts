@@ -15,6 +15,23 @@ const defaults = {
   ]
 };
 
+function isValidContent(value: unknown): boolean {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const content = value as Record<string, unknown>;
+  if (![content.intro, content.aboutLead, content.aboutBody].every((field) => typeof field === "string" && field.length <= 4000)) return false;
+  if (!Array.isArray(content.projects) || content.projects.length !== 3) return false;
+  return content.projects.every((item) => {
+    if (!item || typeof item !== "object" || Array.isArray(item)) return false;
+    const project = item as Record<string, unknown>;
+    if (![project.name, project.description, project.url, project.status].every((field) => typeof field === "string" && field.length <= 1000)) return false;
+    try {
+      return new URL(project.url as string).protocol === "https:";
+    } catch {
+      return false;
+    }
+  });
+}
+
 export async function GET() {
   if (!process.env.DATABASE_URL) {
     return NextResponse.json({ error: "DATABASE_URL is not configured." }, { status: 503 });
@@ -23,7 +40,8 @@ export async function GET() {
     const sql = neon(process.env.DATABASE_URL);
     await sql`CREATE TABLE IF NOT EXISTS portfolio_site_content (id INTEGER PRIMARY KEY CHECK (id = 1), content JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
     const rows = await sql`SELECT content FROM portfolio_site_content WHERE id = 1 LIMIT 1`;
-    return NextResponse.json({ content: rows[0]?.content ?? defaults });
+    const saved = rows[0]?.content;
+    return NextResponse.json({ content: isValidContent(saved) ? saved : defaults });
   } catch {
     return NextResponse.json({ error: "Saved content could not be loaded. Check the database connection and permissions." }, { status: 503 });
   }
