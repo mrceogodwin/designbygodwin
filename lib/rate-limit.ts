@@ -44,5 +44,14 @@ export async function enforceRateLimit({
       END
     RETURNING request_count
   `;
-  return Number(rows[0]?.request_count ?? limit + 1) > limit;
+  const requestCount = Number(rows[0]?.request_count ?? limit + 1);
+
+  // Opportunistically remove expired buckets so the persistent table stays bounded.
+  // This runs infrequently (roughly once per 100 requests from a given key).
+  if (requestCount % 100 === 0) {
+    await sql`DELETE FROM portfolio_rate_limits
+      WHERE window_started_at < NOW() - INTERVAL '2 days'`;
+  }
+
+  return requestCount > limit;
 }
