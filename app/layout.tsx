@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./brand-overrides.css";
 
 const siteUrl = "https://designbygodwin.vercel.app";
 
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#10100f",
+  themeColor: "#080b09",
   width: "device-width",
   initialScale: 1,
 };
