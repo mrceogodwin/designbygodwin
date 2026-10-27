@@ -1,5 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getAdminSession } from "@/lib/admin-auth";
 import MessagesList from "./messages-list";
 
@@ -27,7 +28,7 @@ export default async function AdminDashboardPage() {
   return (
     <main style={{ minHeight: "100vh", background: "#f5f2ea", color: "#171713", padding: "clamp(18px, 4vw, 52px)", fontFamily: "Arial, sans-serif" }}>
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", borderBottom: "1px solid #d8d2c6", paddingBottom: 22, marginBottom: 34 }}>
-        <a href="/" style={{ color: "inherit", fontWeight: 800, letterSpacing: "-.04em", fontSize: 22 }}>g<span style={{ color: "#ff6844" }}>.</span> <span style={{ fontSize: 12, letterSpacing: ".14em" }}>GODWIN / OWNER</span></a>
+        <Link href="/" style={{ color: "inherit", fontWeight: 800, letterSpacing: "-.04em", fontSize: 22 }}>g<span style={{ color: "#ff6844" }}>.</span> <span style={{ fontSize: 12, letterSpacing: ".14em" }}>GODWIN / OWNER</span></Link>
         <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}><span style={muted}>{ownerEmail}</span><form action="/api/admin/logout" method="post"><button type="submit" style={{ border: "1px solid #d8d2c6", borderRadius: 999, background: "transparent", padding: "10px 16px", fontWeight: 700, cursor: "pointer" }}>LOG OUT ↗</button></form></div>
       </header>
       <section style={{ maxWidth: 1100, margin: "0 auto" }}>
