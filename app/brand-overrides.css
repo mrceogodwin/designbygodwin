@@ -1,0 +1,100 @@
+/* DesignbyGodwin premium black / emerald / gold visual system */
+:root{
+ --ink:#f4f1e8;--paper:#080b09;--cream:#101612;--muted:#9ca79e;--line:#27342c;--dark-line:#29372e;
+ --orange:#c9a65b;--mono:"DM Mono",monospace;--sans:"DM Sans",Arial,sans-serif;--serif:"Playfair Display",Georgia,serif;
+ --green:#20b56b;--gold:#d5b56d;--panel:#0d130f;--soft:#131b15;
+}
+html{background:#080b09;color-scheme:dark}
+body{background:#080b09;color:#f4f1e8}
+::selection{background:#20b56b;color:#061009}
+a{transition:color .2s ease}
+.nav-wrap{background:rgba(8,11,9,.88);border-color:#26352b;box-shadow:0 8px 32px #0002}
+.brand-icon span,.eyebrow-line,.section-kicker span:first-child,.principles-grid span,.project-art-head span:last-child,.project-link-row span,.hero-scroll>span:last-child,.art-spark,.serif-word,.display-heading em,.underlined-link span{color:#d5b56d}
+.brand-name small,.main-nav a,.eyebrow,.hero-scroll,.mini-label,.section-kicker,.hero-stats span,.about-detail p,.section-intro-row>p,.principles-grid p,.timeline-content p,.contact-note,.form-privacy{color:#9ca79e}
+.main-nav a:hover{color:#20b56b}
+.nav-availability{border-color:#2a4434;color:#b7d9c1}
+.nav-availability span{background:#20b56b;box-shadow:0 0 0 4px #20b56b22}
+.menu-toggle{border-color:#27342c;color:#f4f1e8}
+.hero-section{background:radial-gradient(ellipse at 82% 38%,#12352255 0,transparent 44%)}
+.hero-copy h1{color:#f4f1e8}
+.outlined-word{-webkit-text-stroke:1.3px #d5b56d}
+.hero-intro{color:#a5afa7}
+.button{border-color:#d5b56d}
+.button-dark{background:#20b56b;border-color:#20b56b;color:#061009;font-weight:500}
+.button-dark:hover{background:#d5b56d;border-color:#d5b56d;color:#080b09}
+.button-quiet{border-color:#334338;color:#e6e9e3}
+.button-quiet:hover{background:#15251a}
+.hero-stats{border-color:#27342c}
+.hero-stats strong{color:#f4f1e8}
+.hero-art{background:#0e1711;border-color:#2b4333}
+.hero-art:before{background-image:linear-gradient(#3b5c4544 1px,transparent 1px),linear-gradient(90deg,#3b5c4544 1px,transparent 1px)}
+.art-label,.art-coordinate{color:#91a394}
+.art-orbit{border-color:#3e694d}
+.art-disc{background:#20b56b;box-shadow:17px 17px 0 #d5b56d}
+.art-disc:before{border-color:#0a1b10}
+.art-disc span{color:#061009}
+.marquee-band{background:#d5b56d;color:#11150f}
+.content-section{background:#080b09}
+.section-kicker{border-color:#27342c}
+.about-detail .about-lead{color:#f4f1e8}
+.display-heading>span{color:#6f8c77}
+.principles-grid{border-color:#27342c}
+.principles-grid>div+div{border-color:#27342c}
+.principles-grid strong{color:#f4f1e8}
+.underlined-link{border-color:#45564a}
+.work-section{background:#0d130f}
+.section-intro-row .display-heading{color:#f4f1e8}
+.project-card{background:#101712;border-color:#293b2e}
+.project-card:hover{box-shadow:0 18px 40px #0008;border-color:#3f6b4b}
+.project-art{background:#101a13;color:#f4f1e8}
+.project-art-head,.project-art-foot{color:#a9b9ac}
+.project-art-head span:last-child{color:#d5b56d}
+.project-glyph{color:#20b56b}
+.project-info h3,.project-description,.project-detail,.service-card h3,.timeline-content h3,.social-card strong{color:#f4f1e8}
+.project-description,.project-detail{color:#a5afa7}
+.project-status,.project-tech span,.service-number,.timeline-date,.timeline-content>span{color:#d5b56d}
+.project-tech span{border-color:#2d4936}
+.project-link-row{border-color:#2a3b2e;color:#d8e4d9}
+.project-link-row:hover{color:#20b56b}
+.toolkit-strip{border-color:#27342c;background:#0b100c}
+.toolkit-strip>span{color:#d5b56d}
+.toolkit-strip strong{color:#e5ebe5}
+.services-section,.experience-section{background:#080b09}
+.service-grid{border-color:#27342c}
+.service-card{border-color:#27342c;background:#0c120e}
+.service-card:hover{background:#111e15}
+.service-card p{color:#9ca79e}
+.timeline{border-color:#27342c}
+.timeline-item{border-color:#27342c}
+.timeline-dot{background:#20b56b;box-shadow:0 0 0 5px #20b56b20}
+.timeline-content p{color:#a5afa7}
+.contact-section{background:#101812;color:#f4f1e8}
+.contact-section .display-heading{color:#f4f1e8}
+.contact-section .display-heading em{color:#d5b56d}
+.contact-section p{color:#a5afa7}
+.contact-form{background:#0a100c;border-color:#2a3b2e}
+.contact-form label{color:#a5b6a8}
+.contact-form input,.contact-form textarea,.contact-form select{background:#0e1711;border-color:#334638;color:#f4f1e8}
+.contact-form input:focus,.contact-form textarea:focus,.contact-form select:focus{outline:1px solid #20b56b;border-color:#20b56b}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:#728176}
+.form-heading{color:#d5b56d}
+.form-privacy{color:#87968b}
+.social-card{border-color:#2a3b2e;background:#0d140f}
+.social-card:hover{border-color:#20b56b;background:#122017}
+.social-card small{color:#9ca79e}
+footer,.site-footer{background:#060806;border-color:#27342c;color:#9ca79e}
+footer a:hover,.site-footer a:hover{color:#d5b56d}
+hr{border-color:#27342c}
+@media(max-width:760px){
+ .nav-wrap{padding-inline:20px;height:70px}
+ .main-nav{background:#0b100c;border-color:#27342c;box-shadow:0 16px 28px #0008}
+ .main-nav a{color:#d8e1d9}
+ .nav-availability{font-size:8px;padding:9px}
+ .hero-section{background:radial-gradient(ellipse at 70% 42%,#12352244 0,transparent 50%)}
+ .hero-art{background:#0e1711}
+ .content-section,.work-section{padding-top:70px;padding-bottom:70px}
+ .project-art{background:#101a13}
+}
+@media(prefers-reduced-motion:reduce){
+ .art-disc,.orbit-one,.orbit-two,.art-spark,.marquee-inner{animation:none!important}
+}
