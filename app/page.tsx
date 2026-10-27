@@ -34,7 +34,18 @@ export default function Home() {
     fetch("/api/admin/content").then(async (response) => {
       if (!response.ok) return;
       const data = await response.json();
-      if (data.content && typeof data.content === "object") setSiteContent(data.content as EditableContent);
+      const value: unknown = data.content;
+      if (!value || typeof value !== "object" || Array.isArray(value)) return;
+      const candidate = value as Record<string, unknown>;
+      if (!["intro", "aboutLead", "aboutBody"].every((key) => typeof candidate[key] === "string")) return;
+      if (!Array.isArray(candidate.projects) || candidate.projects.length !== 3) return;
+      const validProjects = candidate.projects.every((item) => {
+        if (!item || typeof item !== "object" || Array.isArray(item)) return false;
+        const project = item as Record<string, unknown>;
+        if (!["name", "description", "url", "status"].every((key) => typeof project[key] === "string")) return false;
+        try { return new URL(project.url as string).protocol === "https:"; } catch { return false; }
+      });
+      if (validProjects) setSiteContent(value as EditableContent);
     }).catch(() => {});
   }, []);
   const [activeProject, setActiveProject] = useState<string | null>(null);
