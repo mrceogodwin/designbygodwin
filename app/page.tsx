@@ -25,7 +25,7 @@ const socials = [
   { name: "Get in touch", handle: "Jobs · projects · collaborations", href: "#contact", icon: "↗", external: false },
 ];
 
-type EditableProject = { name: string; description: string; url: string; status: string };
+type EditableProject = { name: string; description: string; url: string; status: string; videoUrl?: string };
 type EditableContent = { intro: string; aboutLead: string; aboutBody: string; projects: EditableProject[] };
 
 export default function Home() {
@@ -43,12 +43,14 @@ export default function Home() {
         if (!item || typeof item !== "object" || Array.isArray(item)) return false;
         const project = item as Record<string, unknown>;
         if (!["name", "description", "url", "status"].every((key) => typeof project[key] === "string")) return false;
+        if (project.videoUrl !== undefined && typeof project.videoUrl !== "string") return false;
         try { return new URL(project.url as string).protocol === "https:"; } catch { return false; }
       });
       if (validProjects) setSiteContent(value as EditableContent);
     }).catch(() => {});
   }, []);
   const [activeProject, setActiveProject] = useState<string | null>(null);
+  const [soundEnabled, setSoundEnabled] = useState<Record<string, boolean>>({});
   const [typedHeadline, setTypedHeadline] = useState("momentum.");
   useEffect(() => {
     const words = ["momentum.", "web products.", "digital tools."];
