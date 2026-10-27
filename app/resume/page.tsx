@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Resume — Godwin Oriabure",
@@ -44,7 +45,7 @@ export default function ResumePage() {
   return (
     <main className="resume-page">
       <div className="resume-toolbar no-print">
-        <a href="/">← BACK TO PORTFOLIO</a>
+        <Link href="/">← BACK TO PORTFOLIO</Link>
         <span>PRINT / SAVE AS PDF: use Ctrl+P (Windows) or Cmd+P (Mac)</span>
       </div>
 
@@ -61,7 +62,7 @@ export default function ResumePage() {
           </div>
           <div className="resume-contact">
             <a href="https://github.com/mrceogodwin" target="_blank" rel="noreferrer">github.com/mrceogodwin ↗</a>
-            <a href="/#contact">Contact through portfolio ↗</a>
+            <Link href="/#contact">Contact through portfolio ↗</Link>
             <span>Open to remote opportunities</span>
           </div>
         </header>
@@ -104,7 +105,7 @@ export default function ResumePage() {
 
         <footer className="resume-footer">
           <span>BUILDING IN PUBLIC · LEARNING BY DOING</span>
-          <a href="/">GODWIN ORIABURE ↗</a>
+          <Link href="/">GODWIN ORIABURE ↗</Link>
         </footer>
       </article>
     </main>
