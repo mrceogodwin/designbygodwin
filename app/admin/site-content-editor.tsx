@@ -10,6 +10,23 @@ type SiteContent = {
   projects: Project[];
 };
 
+function isSiteContent(value: unknown): value is SiteContent {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const candidate = value as Record<string, unknown>;
+  if (!["intro", "aboutLead", "aboutBody"].every((key) => typeof candidate[key] === "string")) return false;
+  if (!Array.isArray(candidate.projects) || candidate.projects.length !== 3) return false;
+  return candidate.projects.every((item) => {
+    if (!item || typeof item !== "object" || Array.isArray(item)) return false;
+    const project = item as Record<string, unknown>;
+    if (!["name", "description", "url", "status"].every((key) => typeof project[key] === "string")) return false;
+    try {
+      return new URL(project.url as string).protocol === "https:";
+    } catch {
+      return false;
+    }
+  });
+}
+
 const defaults: SiteContent = {
   intro: "Designer and developer building thoughtful digital experiences.",
   aboutLead: "I turn ideas into useful digital products.",
@@ -33,8 +50,8 @@ export default function SiteContentEditor() {
       .then(async (response) => {
         if (!response.ok) throw new Error("Could not load saved content.");
         const data = await response.json();
-        if (!data.content || typeof data.content !== "object") throw new Error("Saved content response was invalid.");
-        setContent({ ...defaults, ...data.content });
+        if (!isSiteContent(data.content)) throw new Error("Saved content has an invalid structure. Saving is disabled to protect existing content.");
+        setContent(data.content);
       })
       .catch(() => {
         setLoadFailed(true);
