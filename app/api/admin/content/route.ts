@@ -16,13 +16,16 @@ const defaults = {
 };
 
 export async function GET() {
-  if (!process.env.DATABASE_URL) return NextResponse.json({ content: defaults });
+  if (!process.env.DATABASE_URL) {
+    return NextResponse.json({ error: "DATABASE_URL is not configured." }, { status: 503 });
+  }
   try {
     const sql = neon(process.env.DATABASE_URL);
     const rows = await sql`SELECT content FROM portfolio_site_content WHERE id = 1 LIMIT 1`;
     return NextResponse.json({ content: rows[0]?.content ?? defaults });
   } catch {
-    return NextResponse.json({ content: defaults });
+    // Do not silently replace saved content with starter text when the database is unavailable.
+    return NextResponse.json({ error: "Saved content could not be loaded. Check the database connection." }, { status: 503 });
   }
 }
 
