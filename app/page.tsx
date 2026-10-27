@@ -25,7 +25,7 @@ const socials = [
   { name: "Get in touch", handle: "Jobs · projects · collaborations", href: "#contact", icon: "↗", external: false },
 ];
 
-type EditableProject = { name: string; description: string; url: string; status: string };
+type EditableProject = { name: string; description: string; url: string; status: string; videoUrl?: string };
 type EditableContent = { intro: string; aboutLead: string; aboutBody: string; projects: EditableProject[] };
 
 export default function Home() {
@@ -43,12 +43,14 @@ export default function Home() {
         if (!item || typeof item !== "object" || Array.isArray(item)) return false;
         const project = item as Record<string, unknown>;
         if (!["name", "description", "url", "status"].every((key) => typeof project[key] === "string")) return false;
+        if (project.videoUrl !== undefined && typeof project.videoUrl !== "string") return false;
         try { return new URL(project.url as string).protocol === "https:"; } catch { return false; }
       });
       if (validProjects) setSiteContent(value as EditableContent);
     }).catch(() => {});
   }, []);
   const [activeProject, setActiveProject] = useState<string | null>(null);
+  const [soundEnabled, setSoundEnabled] = useState<Record<string, boolean>>({});
   const [typedHeadline, setTypedHeadline] = useState("momentum.");
   useEffect(() => {
     const words = ["momentum.", "web products.", "digital tools."];
@@ -113,9 +115,14 @@ export default function Home() {
         <div className="section-kicker"><span>02 / SELECTED PROJECTS</span><span>IN PROGRESS IS STILL PROGRESS</span></div>
         <div className="section-intro-row"><h2 className="display-heading">A few things<br />I’m <em>building.</em></h2><p>Real project work, honest status, and the thinking behind each build. Open a repository or expand the build notes.</p></div>
         <div className="project-grid">{projects.map((project, index) => { const editable = siteContent?.projects?.[index]; const projectName = editable?.name || project.name; const projectDescription = editable?.description || project.description; const projectHref = editable?.url || project.href; const projectStatus = editable?.status || project.status; return <article className={"project-card " + project.theme} key={project.id}>
-          <a className="project-art" href={projectHref} target="_blank" rel="noreferrer" aria-label={"Open " + projectName + " project in a new tab"}>
+          {editable?.videoUrl ? <div className="project-art project-art-video">
+            <video className="project-preview-video" src={editable.videoUrl} autoPlay muted={!soundEnabled[project.id]} loop playsInline preload="metadata" aria-label={projectName + " product demo"} />
+            <div className="project-video-top"><span>LIVE BUILD / {project.id}</span><span>{project.year}</span></div>
+            <button className="project-sound-toggle" type="button" aria-pressed={Boolean(soundEnabled[project.id])} onClick={() => setSoundEnabled((current) => ({ ...current, [project.id]: !current[project.id] }))}>{soundEnabled[project.id] ? "♫ SOUND ON · MUTE" : "♫ ENABLE SOUND"}</button>
+            <a className="project-video-open" href={projectHref} target="_blank" rel="noreferrer">OPEN PROJECT ↗</a>
+          </div> : <a className="project-art" href={projectHref} target="_blank" rel="noreferrer" aria-label={"Open " + projectName + " project in a new tab"}>
             <div className="project-art-head"><span>PROJECT / {project.id}</span><span>{project.year} ↗</span></div><div className="project-glyph">{project.symbol}<span>.</span></div><div className="project-art-lines" /><div className="project-art-foot"><span>{project.category}</span><span>OPEN PROJECT ↗</span></div>
-          </a>
+          </a>}
           <div className="project-body"><div className="project-name-row"><h3><a href={projectHref} target="_blank" rel="noreferrer" aria-label={"Open " + projectName + " project"}>{projectName} ↗</a></h3><span className="project-status"><i />{projectStatus}</span></div><p>{projectDescription}</p><div className="project-tech">{project.stack.map(t => <span key={t}>{t}</span>)}</div>{activeProject === project.id && <div className="project-detail"><p>{project.detail}</p><a href={project.repo} target="_blank" rel="noreferrer">VIEW SOURCE REPOSITORY ↗</a></div>}<div className="project-link-row"><span>CASE STUDY / BUILD NOTES</span><button onClick={() => setActiveProject(activeProject === project.id ? null : project.id)}>{activeProject === project.id ? "CLOSE −" : "VIEW DETAILS +"}</button></div></div>
         </article>; })}</div>
         <div className="projects-footer"><span>MORE ITERATIONS. MORE TO COME.</span><a href="https://github.com/mrceogodwin" target="_blank" rel="noreferrer">ALL REPOSITORIES ON GITHUB ↗</a></div>

@@ -31,6 +31,8 @@ function isValidContent(value: unknown): boolean {
     if (!item || typeof item !== "object" || Array.isArray(item)) return false;
     const project = item as Record<string, unknown>;
     if (![project.name, project.description, project.url, project.status].every((field) => typeof field === "string" && field.length <= 1000)) return false;
+    if (project.videoUrl !== undefined && typeof project.videoUrl !== "string") return false;
+    if (typeof project.videoUrl === "string" && project.videoUrl !== "") { try { if (new URL(project.videoUrl).protocol !== "https:") return false; } catch { return false; } }
     try {
       return new URL(project.url as string).protocol === "https:";
     } catch {
@@ -98,7 +100,14 @@ export async function PUT(request: Request) {
     } catch {
       return jsonNoStore({ error: "Project links must be valid HTTPS URLs." }, { status: 400 });
     }
-    projects.push({ name: project.name, description: project.description, url: project.url, status: project.status });
+    if (project.videoUrl !== undefined && typeof project.videoUrl !== "string") {
+      return jsonNoStore({ error: "Invalid project video URL." }, { status: 400 });
+    }
+    if (typeof project.videoUrl === "string" && project.videoUrl !== "") {
+      try { if (new URL(project.videoUrl).protocol !== "https:") throw new Error("HTTPS required"); }
+      catch { return jsonNoStore({ error: "Project video links must be valid HTTPS URLs." }, { status: 400 }); }
+    }
+    projects.push({ name: project.name, description: project.description, url: project.url, status: project.status, ...(typeof project.videoUrl === "string" && project.videoUrl ? { videoUrl: project.videoUrl } : {}) });
   }
 
   const content = { intro: value.intro, aboutLead: value.aboutLead, aboutBody: value.aboutBody, projects };

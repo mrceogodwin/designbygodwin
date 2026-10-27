@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-type Project = { name: string; description: string; url: string; status: string };
+type Project = { name: string; description: string; url: string; status: string; videoUrl?: string };
 type SiteContent = {
   intro: string;
   aboutLead: string;
@@ -19,6 +19,7 @@ function isSiteContent(value: unknown): value is SiteContent {
     if (!item || typeof item !== "object" || Array.isArray(item)) return false;
     const project = item as Record<string, unknown>;
     if (!["name", "description", "url", "status"].every((key) => typeof project[key] === "string")) return false;
+    if (project.videoUrl !== undefined && typeof project.videoUrl !== "string") return false;
     try {
       return new URL(project.url as string).protocol === "https:";
     } catch {
@@ -44,6 +45,7 @@ export default function SiteContentEditor() {
   const [loadFailed, setLoadFailed] = useState(false);
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState("");
+  const [uploading, setUploading] = useState<number | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/content")
@@ -59,6 +61,29 @@ export default function SiteContentEditor() {
       })
       .finally(() => setLoading(false));
   }, []);
+
+  async function uploadVideo(index: number, file?: File) {
+    if (!file) return;
+    if (!file.type.startsWith("video/") || file.size > 100 * 1024 * 1024) {
+      setNotice("Choose a video file no larger than 100 MB (MP4 recommended).");
+      return;
+    }
+    setUploading(index);
+    setNotice("");
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const response = await fetch("/api/admin/video", { method: "POST", body: form });
+      const result = await response.json() as { url?: string; error?: string };
+      if (!response.ok || !result.url) throw new Error(result.error || "Video upload failed.");
+      update("projects", content.projects.map((item, i) => i === index ? { ...item, videoUrl: result.url } : item));
+      setNotice(`Video uploaded for ${content.projects[index].name}. Save website content to publish it.`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Video upload failed.");
+    } finally {
+      setUploading(null);
+    }
+  }
 
   function update<K extends keyof SiteContent>(key: K, value: SiteContent[K]) {
     setContent((current) => ({ ...current, [key]: value }));
@@ -113,6 +138,9 @@ export default function SiteContentEditor() {
       {content.projects.map((project, index) => <div key={index} style={{ border: "1px solid #e2ddd2", borderRadius: 12, padding: 14, display: "grid", gap: 10 }}>
         <strong>Project {index + 1}</strong>
         {(["name", "description", "url", "status"] as const).map((key) => <label key={key} style={label}>{key.toUpperCase()}<input style={field} maxLength={1000} value={project[key]} onChange={(e) => update("projects", content.projects.map((item, i) => i === index ? { ...item, [key]: e.target.value } : item))} /></label>)}
+        <label style={label}>PROJECT DEMO VIDEO (MP4 RECOMMENDED · MAX 100 MB)<input style={field} type="file" accept="video/mp4,video/webm,video/quicktime,video/*" disabled={uploading !== null} onChange={(e) => { void uploadVideo(index, e.target.files?.[0]); e.currentTarget.value = ""; }} /></label>
+        {project.videoUrl ? <div style={{ display: "grid", gap: 8 }}><video src={project.videoUrl} muted controls playsInline style={{ width: "100%", maxHeight: 240, background: "#111", borderRadius: 8 }} /><p style={{ ...label, fontWeight: 400, overflowWrap: "anywhere" }}>Video uploaded. Save website content to publish this preview. <button type="button" onClick={() => update("projects", content.projects.map((item, i) => i === index ? { ...item, videoUrl: "" } : item))}>Remove video</button></p></div> : null}
+        {uploading === index ? <p role="status">Uploading video… keep this page open.</p> : null}
       </div>)}
       <button onClick={save} disabled={saving || loading || loadFailed} style={{ justifySelf: "start", border: 0, borderRadius: 999, background: "#171713", color: "white", padding: "13px 20px", fontWeight: 700, cursor: saving || loadFailed ? "not-allowed" : "pointer" }}>{saving ? "SAVING…" : loadFailed ? "SAVING DISABLED — LOAD ERROR" : "SAVE WEBSITE CONTENT ↗"}</button>
       {notice ? <p role="status" style={{ fontSize: 13, color: notice.startsWith("Saved") ? "#237447" : "#9c3020" }}>{notice}</p> : null}
