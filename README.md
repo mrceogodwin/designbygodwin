@@ -48,6 +48,10 @@ The notification is best-effort: a provider error does not discard a message alr
 
 The app defines `/robots.txt` and `/sitemap.xml` through Next.js metadata routes. Verify both return HTTP 200 after the latest source changes are deployed.
 
+## Health check
+
+The read-only `/api/health` endpoint returns a minimal service status and checks whether the configured Neon database can answer a lightweight query. It returns HTTP 200 when the database is reachable and HTTP 503 when the database is unconfigured or unavailable. It never returns credentials or database error details.
+
 ## Production build
 
 ```bash
