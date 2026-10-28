@@ -72,7 +72,7 @@ export default function Home() {
           <div className="hero-stats"><div><strong>03</strong><span>FEATURED BUILDS</span></div><div><strong>∞</strong><span>THINGS TO LEARN</span></div><div><strong>NG</strong><span>BASED IN NIGERIA</span></div></div>
         </div>
         <div className="hero-art" aria-label="Abstract generative geometric artwork">
-          <div className="art-label art-label-top">DESIGN × CODE<br />IDEAS IN MOTION</div><div className="art-orbit orbit-one" /><div className="art-orbit orbit-two" /><div className="art-disc art-disc-portrait"><img className="hero-portrait" src="/godwin-portrait.png" alt="Godwin, web developer" onError={(event) => { event.currentTarget.style.display = "none"; }} /><span className="portrait-monogram">g.</span></div><div className="art-spark">✳</div><div className="art-coordinate">06°20&apos; N<br />05°37&apos; E</div><div className="art-label art-label-bottom">CURIOUS BY NATURE<br />BUILDER BY PRACTICE</div>
+          <div className="art-label art-label-top">DESIGN × CODE<br />IDEAS IN MOTION</div><div className="art-orbit orbit-one" /><div className="art-orbit orbit-two" /><div className="art-disc art-disc-portrait" role="img" aria-label="Gold monogram artwork representing Godwin"><span className="portrait-monogram">g.</span></div><div className="art-spark">✳</div><div className="art-coordinate">06°20&apos; N<br />05°37&apos; E</div><div className="art-label art-label-bottom">CURIOUS BY NATURE<br />BUILDER BY PRACTICE</div>
         </div>
         <a className="hero-scroll" href="#about"><span className="scroll-wheel" /> SCROLL TO DISCOVER <span>↓</span></a>
       </section>
