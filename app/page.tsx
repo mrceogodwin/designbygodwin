@@ -56,8 +56,8 @@ export default function Home() {
     <main id="top">
       <header className="nav-wrap">
         <a className="brand" href="#top" aria-label="Godwin home"><span className="brand-icon">g<span>.</span></span><span className="brand-name">GODWIN<br /><small>WEB DEVELOPER</small></span></a>
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Toggle navigation">{menuOpen ? "CLOSE −" : "MENU +"}</button>
-        <nav className={menuOpen ? "main-nav nav-open" : "main-nav"} aria-label="Main navigation">
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-controls="primary-navigation" aria-expanded={menuOpen} aria-label="Toggle navigation">{menuOpen ? "CLOSE −" : "MENU +"}</button>
+        <nav id="primary-navigation" className={menuOpen ? "main-nav nav-open" : "main-nav"} aria-label="Main navigation">
           {[["About", "#about"], ["Work", "#work"], ["Services", "#services"], ["Experience", "#experience"], ["Resume", "/resume"], ["Contact", "#contact"]].map(([label, href]) => <a key={label} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}
         </nav>
         <a className="nav-availability" href="#contact"><span /> OPEN TO WORK</a>
