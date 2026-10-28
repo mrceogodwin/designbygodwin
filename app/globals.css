@@ -253,3 +253,124 @@ h1, h2, h3, .display-heading, .serif-word, .outlined-word {
 @media (prefers-reduced-motion: reduce) {
   .project-card:hover { transform: none; }
 }
+
+
+/* Executive technology portfolio — Microsoft-inspired blue and white */
+:root {
+  --ink: #0b1220;
+  --paper: #ffffff;
+  --line: #d8e1ee;
+  --dark-line: #cbd5e1;
+  --accent: #0078d4;
+  --sans: var(--font-manrope, "Segoe UI", Inter, Arial, sans-serif);
+  --mono: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+}
+html { background: #fff; color-scheme: light; scroll-behavior: smooth; }
+body { background: #fff; color: #0b1220; font-family: var(--sans); }
+::selection { background: #0078d4; color: #fff; }
+a { color: inherit; }
+.nav-wrap, .main-nav { background: rgba(255,255,255,.96); color: #0b1220; }
+.nav-wrap { border-bottom: 1px solid #e2e8f0; }
+.brand-icon, .brand-name, .eyebrow, .eyebrow-year, .mini-label,
+.section-kicker, .service-number, .timeline-content>span,
+.resume-eyebrow, .resume-block>h2, .project-art-head span:last-child,
+.project-art-foot span:last-child, .project-status i, .social-arrow,
+.email-copy span, .form-heading span:last-child { color: #0078d4 !important; }
+.nav-availability, .button, .button-light, .form-submit, .resume-toolbar button {
+  background: #0078d4; color: #fff; border-color: #0078d4;
+}
+.nav-availability:hover, .button:hover, .button-light:hover, .form-submit:hover,
+.resume-toolbar button:hover { background: #005a9e; color: #fff; border-color: #005a9e; }
+.main-nav a:hover, .project-link-row button:hover, .project-name-row h3 a:hover { color: #0078d4; }
+.hero-section, .content-section, .services-section, .social-section,
+.work-section, .experience-section, .contact-section { background: #fff; color: #0b1220; }
+.hero-intro, .about-detail p, .section-intro-row>p, .service-row p,
+.toolkit-strip>span, .project-body>p, .projects-footer, .social-heading>p,
+.social-card small, .contact-copy>p:not(.mini-label):not(.contact-note),
+.contact-note, .form-privacy, .contact-bottom, .timeline-content p { color: #526174; }
+.hero-art, .project-art { background: #f3f8fd; border: 1px solid #d7e6f5; }
+.hero-art {
+  background-image: linear-gradient(#0078d410 1px, transparent 1px),
+    linear-gradient(90deg, #0078d410 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.art-disc, .art-disc-portrait { background: #0078d4; color: #fff; }
+.art-disc span, .portrait-monogram { color: #fff !important; }
+.art-disc:before { border-color: #fff; }
+.art-disc:after { border-color: #0078d4; }
+.art-ring, .art-spark { color: #0078d4; border-color: #0078d4; }
+.art-label, .art-coordinate { color: #526174; }
+.marquee-band { background: #0078d4; color: #fff; border-color: #0078d4; }
+.project-card, .project-body, .project-detail, .resume-note {
+  background: #fff; color: #0b1220; border-color: #d8e1ee;
+}
+.project-card { border: 1px solid #d8e1ee; }
+.project-card:hover { border-color: #0078d4; transform: translateY(-3px); }
+.project-art.vibr, .project-card.stacks .project-art, .project-card.kilode .project-art { background: #f3f8fd; }
+.project-art-lines {
+  background-image: linear-gradient(#0078d410 1px, transparent 1px),
+    linear-gradient(90deg, #0078d410 1px, transparent 1px);
+}
+.project-glyph, .project-glyph span { color: #0078d4 !important; }
+.project-status, .project-link-row, .projects-footer { color: #526174; }
+.project-tech span, .social-icon, .social-card, .service-list, .service-row,
+.toolkit-strip, .toolkit-strip b, .timeline, .timeline-item,
+.contact-form, .contact-bottom { border-color: #d8e1ee; }
+.project-tech span, .toolkit-strip b { color: #334155; background: #f8fafc; }
+.project-detail p { color: #526174; }
+.experience-section .section-kicker { border-color: #d8e1ee; color: #526174; }
+.timeline-marker:after { background: #cbd5e1; }
+.timeline-marker span { background: #0078d4; }
+.resume-note { background: #f3f8fd; }
+.social-card { background: #fff; border: 1px solid #d8e1ee; }
+.social-card:hover { background: #f3f8fd; border-color: #0078d4; }
+.social-icon { color: #0078d4; }
+.contact-section { border-top: 1px solid #d8e1ee; }
+.contact-section .section-kicker, .contact-form { border-color: #d8e1ee; }
+.contact-form { background: #f8fafc; }
+.contact-form input, .contact-form textarea, .contact-form select {
+  background: #fff; color: #0b1220; border-color: #cbd5e1;
+}
+.contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus { border-color: #0078d4; }
+.contact-form input::placeholder, .contact-form textarea::placeholder { color: #8492a6; }
+.form-error { color: #b42318; }
+.form-success { color: #067647; }
+.email-copy { color: #0078d4; border-color: #b8cce0; }
+.contact-bottom { border-color: #d8e1ee; }
+.resume-page { background: #f3f6fa; color: #0b1220; }
+.resume-sheet { background: #fff; color: #0b1220; border-color: #d8e1ee; box-shadow: 0 12px 40px #0b122010; }
+.resume-header { border-color: #0078d4; }
+.resume-summary, .resume-project p, .resume-education p, .resume-contact, .resume-note-text { color: #526174; }
+.resume-contact span, .resume-project h3 span, .resume-project>a { color: #0078d4; }
+.resume-skills span { border-color: #d8e1ee; }
+.resume-block { border-color: #d8e1ee; }
+.resume-toolbar a, .resume-footer a { color: #0078d4; border-color: #b8cce0; }
+.resume-footer { color: #526174; }
+.button, .nav-availability, .contact-form, .project-card, .project-art,
+.project-detail, .social-card, .resume-sheet, .resume-note, .resume-skills span {
+  border-radius: 8px !important;
+  box-shadow: none;
+}
+h1, h2, h3, .display-heading, .serif-word, .outlined-word {
+  font-family: var(--sans) !important;
+  font-style: normal !important;
+}
+.serif-word { color: #0078d4 !important; }
+.outlined-word { color: #0b1220 !important; -webkit-text-stroke: 0; }
+.project-art::after {
+  color: #0078d4; background: #fff; border: 1px solid #b8cce0;
+}
+.project-body { border-top: 1px solid #e2e8f0; }
+.contact-form input, .contact-form textarea, .contact-form select { border-radius: 6px; }
+:focus-visible { outline: 2px solid #0078d4 !important; outline-offset: 3px; }
+@media (max-width: 640px) {
+  .main-nav { background: #fff; border-color: #d8e1ee; }
+  .main-nav a { border-color: #d8e1ee; }
+}
+@media (prefers-reduced-motion: reduce) { .project-card:hover { transform: none; } }
+@media print {
+  .resume-page, .resume-sheet { background: #fff; color: #000; }
+  .resume-header { border-color: #0078d4; }
+  .resume-summary, .resume-project p, .resume-education p, .resume-contact,
+  .resume-note-text, .resume-footer { color: #444; }
+}
