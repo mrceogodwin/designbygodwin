@@ -9,6 +9,14 @@ const MAX_VIDEO_BYTES = 100 * 1024 * 1024;
 const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
 
 export async function POST(request: Request) {
+  // Reject unauthenticated callers before revealing storage configuration.
+  if (!(await getAdminSession())) {
+    return NextResponse.json(
+      { error: "Unauthorized. Sign in to the owner dashboard first." },
+      { status: 401, headers: { "Cache-Control": "no-store" } },
+    );
+  }
+
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     return NextResponse.json(
       { error: "Video storage is not configured. Add BLOB_READ_WRITE_TOKEN from your Vercel Blob store to this project's environment variables." },
@@ -21,14 +29,20 @@ export async function POST(request: Request) {
     const result = await handleUpload({
       body,
       request,
-      onBeforeGenerateToken: async (_pathname, clientPayload) => {
+      onBeforeGenerateToken: async (pathname, clientPayload) => {
         const ownerEmail = await getAdminSession();
         if (!ownerEmail) {
           throw new Error("Unauthorized. Sign in to the owner dashboard first.");
         }
 
-        // Treat clientPayload as untrusted input. It is only used to reject
-        // malformed requests; authorization comes exclusively from the session.
+        // Restrict uploads to a dedicated prefix and a single safe filename.
+        // The client-supplied pathname is untrusted even after session auth.
+        const relativePath = pathname.startsWith("project-demos/") ? pathname.slice("project-demos/".length) : "";
+        if (!relativePath || relativePath.includes("/") || relativePath === "." || relativePath === ".." || relativePath.includes("\\") || relativePath.includes("..")) {
+          throw new Error("Invalid video upload path.");
+        }
+
+        // Treat clientPayload as untrusted input; authorization comes exclusively from the session.
         if (clientPayload !== undefined && clientPayload !== null) {
           try {
             const parsed = JSON.parse(clientPayload);
