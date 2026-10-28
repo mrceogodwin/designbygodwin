@@ -82,3 +82,105 @@
 /* Personal portrait in the hero emblem */
 .art-disc-portrait{overflow:hidden;background:var(--orange);isolation:isolate}.hero-portrait{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 24%;border-radius:50%;z-index:2;mix-blend-mode:normal}.portrait-monogram{position:absolute;z-index:3;right:8%;bottom:1%;font-size:clamp(34px,4vw,48px)!important;line-height:1;color:var(--ink);background:var(--orange);padding:0 8px 6px;border-radius:50%;letter-spacing:-.13em}.art-disc-portrait:before{z-index:4;pointer-events:none;inset:13px}
 @media(max-width:700px){.hero-art{height:auto;aspect-ratio:1/1;max-width:none}.hero-portrait{object-position:center 22%}.art-disc-portrait{width:53%}}
+
+
+/* Monochrome technical portfolio pass — pure black, white, and neutral grays */
+:root {
+  --ink: #000000;
+  --paper: #ffffff;
+  --orange: #ffffff;
+  --line: #292929;
+  --dark-line: #292929;
+  --sans: var(--font-manrope, Inter, Arial, sans-serif);
+  --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+html { background: #000; color-scheme: dark; scroll-behavior: smooth; }
+body { background: #000; color: #fff; }
+::selection { background: #fff; color: #000; }
+a { color: inherit; }
+.nav-wrap, .main-nav { background: #000; color: #fff; }
+.nav-wrap { border-bottom: 1px solid #262626; }
+.brand-icon, .brand-name, .eyebrow, .eyebrow-year, .mini-label,
+.section-kicker, .section-kicker span:first-child, .service-number,
+.timeline-content>span, .resume-eyebrow, .resume-block>h2,
+.project-art-head span:last-child, .project-art-foot span:last-child,
+.project-status i, .typing-cursor, .social-arrow, .email-copy span,
+.form-heading span:last-child { color: #fff !important; }
+.nav-availability, .button, .button-light, .form-submit {
+  background: #fff; color: #000; border-color: #fff;
+}
+.nav-availability:hover, .button:hover, .button-light:hover, .form-submit:hover {
+  background: #d9d9d9; color: #000; border-color: #d9d9d9;
+}
+.main-nav a:hover, .project-link-row button:hover, .project-name-row h3 a:hover { color: #bdbdbd; }
+.hero-section, .content-section, .services-section, .social-section { background: #000; color: #fff; }
+.hero-intro, .about-detail p, .section-intro-row>p, .service-row p,
+.toolkit-strip>span, .project-body>p, .projects-footer, .social-heading>p,
+.social-card small, .contact-copy>p:not(.mini-label):not(.contact-note),
+.contact-note, .form-privacy, .contact-bottom { color: #aaa; }
+.hero-art, .project-art { background: #101010; border: 1px solid #303030; }
+.art-disc, .art-disc-portrait { background: #fff; color: #000; }
+.art-disc span, .portrait-monogram { color: #000 !important; }
+.art-disc:before { border-color: #000; }
+.art-disc:after { border-color: #fff; }
+.art-ring, .art-spark { color: #fff; border-color: #fff; }
+.marquee-band { background: #fff; color: #000; border-color: #fff; }
+.work-section, .experience-section { background: #080808; color: #fff; }
+.project-card, .project-body, .project-detail, .resume-note {
+  background: #101010; color: #fff; border-color: #303030;
+}
+.project-art.vibr, .project-card.stacks .project-art, .project-card.kilode .project-art {
+  background: #101010;
+}
+.project-art-lines {
+  background-image: linear-gradient(#ffffff12 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff12 1px, transparent 1px);
+}
+.project-glyph, .project-glyph span { color: #fff !important; }
+.project-status, .project-link-row, .projects-footer { color: #aaa; }
+.project-tech span, .social-icon, .social-card, .service-list, .service-row,
+.toolkit-strip, .toolkit-strip b, .timeline, .timeline-item, .resume-note,
+.social-card, .contact-form, .contact-bottom { border-color: #303030; }
+.project-tech span, .toolkit-strip b { color: #ddd; }
+.project-detail p { color: #bbb; }
+.experience-section .section-kicker { border-color: #303030; color: #bbb; }
+.experience-section .section-intro-row>p, .timeline-content p { color: #aaa; }
+.timeline-marker:after { background: #333; }
+.timeline-marker span { background: #fff; }
+.resume-note { background: #101010; }
+.social-card:hover { background: #151515; border-color: #777; }
+.social-icon { color: #fff; }
+.contact-section { background: #000; color: #fff; border-top: 1px solid #303030; }
+.contact-section .section-kicker, .contact-form { border-color: #303030; }
+.contact-form { background: #0b0b0b; }
+.contact-form input, .contact-form textarea, .contact-form select {
+  background: #000; color: #fff; border-color: #333;
+}
+.contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus { border-color: #fff; }
+.contact-form input::placeholder, .contact-form textarea::placeholder { color: #777; }
+.form-error { color: #ffb3b3; }
+.form-success { color: #fff; }
+.email-copy { color: #fff; border-color: #555; }
+.contact-bottom { border-color: #303030; }
+.resume-page { background: #000; color: #fff; }
+.resume-sheet { background: #080808; color: #fff; border-color: #303030; box-shadow: none; }
+.resume-header { border-color: #fff; }
+.resume-summary, .resume-project p, .resume-education p, .resume-contact,
+.resume-note-text { color: #aaa; }
+.resume-contact span, .resume-project h3 span, .resume-project>a { color: #fff; }
+.resume-skills span { border-color: #333; }
+.resume-block { border-color: #303030; }
+.resume-toolbar button { background: #fff; color: #000; border-color: #fff; }
+.resume-toolbar button:hover { background: #ccc; border-color: #ccc; color: #000; }
+.resume-toolbar a, .resume-footer a { color: #fff; border-color: #555; }
+.resume-footer { color: #999; }
+@media (max-width: 640px) {
+  .main-nav { background: #000; border-color: #303030; }
+  .main-nav a { border-color: #303030; }
+}
+@media print {
+  .resume-page, .resume-sheet { background: #fff; color: #000; }
+  .resume-header { border-color: #000; }
+  .resume-summary, .resume-project p, .resume-education p, .resume-contact,
+  .resume-note-text, .resume-footer { color: #444; }
+}
