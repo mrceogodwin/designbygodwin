@@ -3,7 +3,7 @@
 A premium, responsive developer portfolio built with Next.js App Router, React, TypeScript, and custom CSS.
 
 ## Features
-- Near-black, champagne-gold, and white visual system with bold typography
+- Royal-blue homepage with white typography, refined gradients, and high-contrast project showcase cards
 - Responsive desktop, tablet, and mobile layout
 - CSS motion with reduced-motion support
 - Responsive project showcase cards with optional muted-autoplay demo videos and click-to-enable sound
