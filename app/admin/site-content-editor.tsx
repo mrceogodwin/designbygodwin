@@ -132,7 +132,7 @@ export default function SiteContentEditor() {
     }
   }
 
-  const field: React.CSSProperties = { width: "100%", boxSizing: "border-box", border: "1px solid #30302b", borderRadius: 10, padding: 12, font: "inherit", background: "#080808" };
+  const field: React.CSSProperties = { width: "100%", boxSizing: "border-box", border: "1px solid #30302b", borderRadius: 10, padding: 12, font: "inherit", background: "#080808", color: "#f5f5f2", outlineColor: "#d6b36a" };
   const label: React.CSSProperties = { display: "block", fontSize: 12, fontWeight: 700, letterSpacing: ".08em", marginBottom: 7 };
   return <section style={{ background: "#111111", border: "1px solid #30302b", borderRadius: 16, padding: 22, marginBottom: 24 }}>
     <p style={{ color: "#d6b36a", fontSize: 11, fontWeight: 700, letterSpacing: ".18em" }}>PORTFOLIO / CONTENT</p>
@@ -150,8 +150,8 @@ export default function SiteContentEditor() {
         {project.videoUrl ? <div style={{ display: "grid", gap: 8 }}><video src={project.videoUrl} muted controls playsInline style={{ width: "100%", maxHeight: 240, background: "#111", borderRadius: 8 }} /><p style={{ ...label, fontWeight: 400, overflowWrap: "anywhere" }}>Video uploaded. Save website content to publish this preview. <button type="button" onClick={() => update("projects", content.projects.map((item, i) => i === index ? { ...item, videoUrl: "" } : item))}>Remove video</button></p></div> : null}
         {uploading === index ? <p role="status">Uploading video… keep this page open.</p> : null}
       </div>)}
-      <button onClick={save} disabled={saving || loading || loadFailed} style={{ justifySelf: "start", border: 0, borderRadius: 999, background: "#d6b36a", color: "white", padding: "13px 20px", fontWeight: 700, cursor: saving || loadFailed ? "not-allowed" : "pointer" }}>{saving ? "SAVING…" : loadFailed ? "SAVING DISABLED — LOAD ERROR" : "SAVE WEBSITE CONTENT ↗"}</button>
-      {notice ? <p role="status" style={{ fontSize: 13, color: notice.startsWith("Saved") ? "#237447" : "#9c3020" }}>{notice}</p> : null}
+      <button onClick={save} disabled={saving || loading || loadFailed} style={{ justifySelf: "start", border: 0, borderRadius: 999, background: "#d6b36a", color: "#080808", padding: "13px 20px", fontWeight: 700, cursor: saving || loadFailed ? "not-allowed" : "pointer" }}>{saving ? "SAVING…" : loadFailed ? "SAVING DISABLED — LOAD ERROR" : "SAVE WEBSITE CONTENT ↗"}</button>
+      {notice ? <p role="status" style={{ fontSize: 13, color: notice.startsWith("Saved") ? "#d6b36a" : "#f2b7aa", background: notice.startsWith("Saved") ? "#211d14" : "#281512", border: "1px solid #39352b", borderRadius: 8, padding: 12, lineHeight: 1.6 }}>{notice}</p> : null}
     </div>}
   </section>;
 }
