@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <main style={{ minHeight: "100vh", background: "#ffffff", color: "#0b1220", display: "grid", gridTemplateColumns: "minmax(0, 1.05fr) minmax(320px, .95fr)", fontFamily: "Arial, sans-serif" }}>
+    <main style={{ minHeight: "100vh", background: "#ffffff", color: "#0b1220", display: "grid", gridTemplateColumns: "minmax(0, 1.05fr) minmax(320px, .95fr)", fontFamily: '"Segoe UI", Arial, sans-serif' }}>
       <section style={{ background: "#ffffff", color: "#0b1220", padding: "clamp(28px, 6vw, 88px)", display: "flex", flexDirection: "column", justifyContent: "space-between", minHeight: "100%" }}>
         <Link href="/" style={{ color: "inherit", fontWeight: 800, letterSpacing: "-.04em", fontSize: 22 }}>g<span style={{ color: "#0078d4" }}>.</span> <span style={{ fontSize: 12, letterSpacing: ".14em" }}>GODWIN</span></Link>
         <div style={{ maxWidth: 520, paddingBlock: 60 }}>
