@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { upload } from "@vercel/blob/client";
 
 type Project = { name: string; description: string; url: string; status: string; videoUrl?: string };
 type SiteContent = {
@@ -64,19 +65,22 @@ export default function SiteContentEditor() {
 
   async function uploadVideo(index: number, file?: File) {
     if (!file) return;
-    if (!file.type.startsWith("video/") || file.size > 100 * 1024 * 1024) {
-      setNotice("Choose a video file no larger than 100 MB (MP4 recommended).");
+    const allowedTypes = ["video/mp4", "video/webm", "video/quicktime"];
+    if (!allowedTypes.includes(file.type) || file.size <= 0 || file.size > 100 * 1024 * 1024) {
+      setNotice("Choose an MP4, WebM, or QuickTime video no larger than 100 MB.");
       return;
     }
     setUploading(index);
     setNotice("");
     try {
-      const form = new FormData();
-      form.append("file", file);
-      const response = await fetch("/api/admin/video", { method: "POST", body: form });
-      const result = await response.json() as { url?: string; error?: string };
-      if (!response.ok || !result.url) throw new Error(result.error || "Video upload failed.");
-      update("projects", content.projects.map((item, i) => i === index ? { ...item, videoUrl: result.url } : item));
+      // Upload directly from the browser to Blob so large files do not pass through
+      // a serverless function request body (which has a much smaller size limit).
+      const blob = await upload(file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/admin/video",
+        clientPayload: JSON.stringify({ projectIndex: index }),
+      });
+      update("projects", content.projects.map((item, i) => i === index ? { ...item, videoUrl: blob.url } : item));
       setNotice(`Video uploaded for ${content.projects[index].name}. Save website content to publish it.`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Video upload failed.");
@@ -138,7 +142,7 @@ export default function SiteContentEditor() {
       {content.projects.map((project, index) => <div key={index} style={{ border: "1px solid #e2ddd2", borderRadius: 12, padding: 14, display: "grid", gap: 10 }}>
         <strong>Project {index + 1}</strong>
         {(["name", "description", "url", "status"] as const).map((key) => <label key={key} style={label}>{key.toUpperCase()}<input style={field} maxLength={1000} value={project[key]} onChange={(e) => update("projects", content.projects.map((item, i) => i === index ? { ...item, [key]: e.target.value } : item))} /></label>)}
-        <label style={label}>PROJECT DEMO VIDEO (MP4 RECOMMENDED · MAX 100 MB)<input style={field} type="file" accept="video/mp4,video/webm,video/quicktime,video/*" disabled={uploading !== null} onChange={(e) => { void uploadVideo(index, e.target.files?.[0]); e.currentTarget.value = ""; }} /></label>
+        <label style={label}>PROJECT DEMO VIDEO (MP4 RECOMMENDED · MAX 100 MB)<input style={field} type="file" accept="video/mp4,video/webm,video/quicktime" disabled={uploading !== null} onChange={(e) => { void uploadVideo(index, e.target.files?.[0]); e.currentTarget.value = ""; }} /></label>
         {project.videoUrl ? <div style={{ display: "grid", gap: 8 }}><video src={project.videoUrl} muted controls playsInline style={{ width: "100%", maxHeight: 240, background: "#111", borderRadius: 8 }} /><p style={{ ...label, fontWeight: 400, overflowWrap: "anywhere" }}>Video uploaded. Save website content to publish this preview. <button type="button" onClick={() => update("projects", content.projects.map((item, i) => i === index ? { ...item, videoUrl: "" } : item))}>Remove video</button></p></div> : null}
         {uploading === index ? <p role="status">Uploading video… keep this page open.</p> : null}
       </div>)}
