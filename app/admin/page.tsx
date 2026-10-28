@@ -24,24 +24,24 @@ export default async function AdminDashboardPage() {
     }
   }
   const emailNotificationsConfigured = Boolean(process.env.BREVO_API_KEY && process.env.BREVO_SENDER_EMAIL && process.env.ADMIN_EMAIL);
-  const panel: React.CSSProperties = { background: "#111111", border: "1px solid #30302b", borderRadius: 16, padding: 22 };
-  const muted: React.CSSProperties = { color: "#aaa69b", fontSize: 13 };
+  const panel: React.CSSProperties = { background: "#ffffff", border: "1px solid #d8e1ee", borderRadius: 16, padding: 22 };
+  const muted: React.CSSProperties = { color: "#526174", fontSize: 13 };
   return (
-    <main style={{ minHeight: "100vh", background: "#080808", color: "#f5f5f2", padding: "clamp(18px, 4vw, 52px)", fontFamily: "Arial, sans-serif" }}>
+    <main style={{ minHeight: "100vh", background: "#ffffff", color: "#0b1220", padding: "clamp(18px, 4vw, 52px)", fontFamily: "Arial, sans-serif" }}>
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", borderBottom: "1px solid #30302b", paddingBottom: 22, marginBottom: 34 }}>
-        <Link href="/" style={{ color: "inherit", fontWeight: 800, letterSpacing: "-.04em", fontSize: 22 }}>g<span style={{ color: "#d6b36a" }}>.</span> <span style={{ fontSize: 12, letterSpacing: ".14em" }}>GODWIN / OWNER</span></Link>
-        <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}><span style={muted}>{ownerEmail}</span><form action="/api/admin/logout" method="post"><button type="submit" style={{ border: "1px solid #30302b", borderRadius: 999, background: "transparent", padding: "10px 16px", fontWeight: 700, cursor: "pointer" }}>LOG OUT ↗</button></form></div>
+        <Link href="/" style={{ color: "inherit", fontWeight: 800, letterSpacing: "-.04em", fontSize: 22 }}>g<span style={{ color: "#0078d4" }}>.</span> <span style={{ fontSize: 12, letterSpacing: ".14em" }}>GODWIN / OWNER</span></Link>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}><span style={muted}>{ownerEmail}</span><form action="/api/admin/logout" method="post"><button type="submit" style={{ border: "1px solid #d8e1ee", borderRadius: 999, background: "transparent", padding: "10px 16px", fontWeight: 700, cursor: "pointer" }}>LOG OUT ↗</button></form></div>
       </header>
       <section style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <p style={{ color: "#d6b36a", fontSize: 11, fontWeight: 700, letterSpacing: ".18em" }}>PRIVATE WORKSPACE / OVERVIEW</p>
-        <h1 style={{ fontSize: "clamp(38px, 6vw, 64px)", letterSpacing: "-.065em", lineHeight: 1, margin: "14px 0" }}>Your inbox<span style={{ color: "#d6b36a" }}>.</span></h1>
+        <p style={{ color: "#0078d4", fontSize: 11, fontWeight: 700, letterSpacing: ".18em" }}>PRIVATE WORKSPACE / OVERVIEW</p>
+        <h1 style={{ fontSize: "clamp(38px, 6vw, 64px)", letterSpacing: "-.065em", lineHeight: 1, margin: "14px 0" }}>Your inbox<span style={{ color: "#0078d4" }}>.</span></h1>
         <p style={{ ...muted, fontSize: 15, marginBottom: 28 }}>Portfolio contact messages, saved securely for you to review.</p>
         <SiteContentEditor />
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 14, marginBottom: 24 }}>
           <div style={panel}><p style={{ ...muted, marginTop: 0 }}>TOTAL MESSAGES LOADED</p><strong style={{ fontSize: 38, letterSpacing: "-.05em" }}>{messages.length}</strong><p style={muted}>Showing up to 100 latest messages</p></div>
           <div style={panel}><p style={{ ...muted, marginTop: 0 }}>EMAIL NOTIFICATIONS</p><strong style={{ fontSize: 21 }}>{emailNotificationsConfigured ? "Configured" : "Setup required"}</strong><p style={muted}>{emailNotificationsConfigured ? "Provider credentials are present; delivery still needs a live test." : "Add BREVO_API_KEY and a verified BREVO_SENDER_EMAIL in Vercel to enable alerts."}</p></div>
         </div>
-        {loadError ? <div role="alert" style={{ ...panel, borderColor: "#6d3d34", color: "#f2b7aa", background: "#281512", marginBottom: 20 }}>{loadError}</div> : null}
+        {loadError ? <div role="alert" style={{ ...panel, borderColor: "#6d3d34", color: "#b42318", background: "#fef3f2", marginBottom: 20 }}>{loadError}</div> : null}
         <MessagesList messages={messages} />
       </section>
     </main>
