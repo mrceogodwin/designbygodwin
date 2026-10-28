@@ -374,3 +374,79 @@ h1, h2, h3, .display-heading, .serif-word, .outlined-word {
   .resume-summary, .resume-project p, .resume-education p, .resume-contact,
   .resume-note-text, .resume-footer { color: #444; }
 }
+
+
+/* Uploaded project demos: clean executive blue-and-white controls */
+.project-art.project-art-video {
+  display: block;
+  height: 265px;
+  padding: 0;
+  background: #eff6ff;
+  color: #0b1220;
+  border: 1px solid #d8e1ee;
+  cursor: default;
+}
+.project-preview-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #eff6ff;
+}
+.project-video-top {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  pointer-events: none;
+}
+.project-video-top span {
+  padding: 7px 9px;
+  border: 1px solid #d8e1ee;
+  border-radius: 5px;
+  background: rgba(255,255,255,.94);
+  color: #334155;
+  font: 9px var(--mono);
+  letter-spacing: .04em;
+}
+.project-sound-toggle, .project-video-open {
+  position: absolute;
+  bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid #0078d4;
+  border-radius: 6px;
+  background: #0078d4;
+  color: #fff;
+  font: 9px var(--mono);
+  letter-spacing: .035em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .18s, border-color .18s;
+}
+.project-sound-toggle { left: 14px; }
+.project-video-open { right: 14px; background: #fff; color: #005a9e; }
+.project-sound-toggle:hover, .project-video-open:hover {
+  background: #005a9e;
+  border-color: #005a9e;
+  color: #fff;
+}
+.project-sound-toggle:focus-visible, .project-video-open:focus-visible {
+  outline: 2px solid #005a9e;
+  outline-offset: 3px;
+}
+@media (max-width: 640px) {
+  .project-art.project-art-video { height: clamp(210px, 65vw, 280px); }
+  .project-video-top { top: 10px; left: 10px; right: 10px; }
+  .project-video-top span { font-size: 8px; }
+  .project-sound-toggle, .project-video-open { bottom: 10px; min-height: 32px; padding: 0 9px; font-size: 8px; }
+  .project-sound-toggle { left: 10px; }
+  .project-video-open { right: 10px; }
+}
