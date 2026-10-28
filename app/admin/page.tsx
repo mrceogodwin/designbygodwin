@@ -27,7 +27,7 @@ export default async function AdminDashboardPage() {
   const panel: React.CSSProperties = { background: "#ffffff", border: "1px solid #d8e1ee", borderRadius: 16, padding: 22 };
   const muted: React.CSSProperties = { color: "#526174", fontSize: 13 };
   return (
-    <main style={{ minHeight: "100vh", background: "#ffffff", color: "#0b1220", padding: "clamp(18px, 4vw, 52px)", fontFamily: "Arial, sans-serif" }}>
+    <main style={{ minHeight: "100vh", background: "#ffffff", color: "#0b1220", padding: "clamp(18px, 4vw, 52px)", fontFamily: '"Segoe UI", Arial, sans-serif' }}>
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", borderBottom: "1px solid #d8e1ee", paddingBottom: 22, marginBottom: 34 }}>
         <Link href="/" style={{ color: "inherit", fontWeight: 800, letterSpacing: "-.04em", fontSize: 22 }}>g<span style={{ color: "#0078d4" }}>.</span> <span style={{ fontSize: 12, letterSpacing: ".14em" }}>GODWIN / OWNER</span></Link>
         <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}><span style={muted}>{ownerEmail}</span><form action="/api/admin/logout" method="post"><button type="submit" style={{ border: "1px solid #d8e1ee", borderRadius: 999, background: "transparent", padding: "10px 16px", fontWeight: 700, cursor: "pointer" }}>LOG OUT ↗</button></form></div>
