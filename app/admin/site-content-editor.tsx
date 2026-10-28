@@ -75,7 +75,8 @@ export default function SiteContentEditor() {
     try {
       // Upload directly from the browser to Blob so large files do not pass through
       // a serverless function request body (which has a much smaller size limit).
-      const blob = await upload(file.name, file, {
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-").slice(-100) || "project-demo.mp4";
+      const blob = await upload(`project-demos/${safeName}`, file, {
         access: "public",
         handleUploadUrl: "/api/admin/video",
         clientPayload: JSON.stringify({ projectIndex: index }),
