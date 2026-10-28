@@ -41,7 +41,7 @@ export default async function AdminDashboardPage() {
           <div style={panel}><p style={{ ...muted, marginTop: 0 }}>TOTAL MESSAGES LOADED</p><strong style={{ fontSize: 38, letterSpacing: "-.05em" }}>{messages.length}</strong><p style={muted}>Showing up to 100 latest messages</p></div>
           <div style={panel}><p style={{ ...muted, marginTop: 0 }}>EMAIL NOTIFICATIONS</p><strong style={{ fontSize: 21 }}>{emailNotificationsConfigured ? "Configured" : "Setup required"}</strong><p style={muted}>{emailNotificationsConfigured ? "Provider credentials are present; delivery still needs a live test." : "Add BREVO_API_KEY and a verified BREVO_SENDER_EMAIL in Vercel to enable alerts."}</p></div>
         </div>
-        {loadError ? <div role="alert" style={{ ...panel, borderColor: "#e6b3a8", color: "#9c3020", marginBottom: 20 }}>{loadError}</div> : null}
+        {loadError ? <div role="alert" style={{ ...panel, borderColor: "#6d3d34", color: "#f2b7aa", background: "#281512", marginBottom: 20 }}>{loadError}</div> : null}
         <MessagesList messages={messages} />
       </section>
     </main>
