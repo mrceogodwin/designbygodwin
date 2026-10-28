@@ -727,3 +727,33 @@ footer a, footer p, footer small { color: #d4e5ff; }
   border-bottom: 1px solid rgba(255,255,255,.22);
 }
 .marquee-inner b { color: #c9e2ff; }
+
+
+/* Final grid correction: all three project cards share one consistent rhythm. */
+@media (min-width: 1100px) {
+  .project-card:first-child { grid-column: auto; }
+  .project-art-showcase,
+  .project-card:first-child .project-art-showcase {
+    height: 260px;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+}
+@media (min-width: 761px) and (max-width: 1099px) {
+  .project-card:first-child { grid-column: auto; }
+  .project-art-showcase,
+  .project-card:first-child .project-art-showcase {
+    height: 270px;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+}
+@media (max-width: 760px) {
+  .project-card:first-child { grid-column: auto; }
+  .project-art-showcase,
+  .project-card:first-child .project-art-showcase {
+    height: clamp(230px, 68vw, 300px);
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+}
