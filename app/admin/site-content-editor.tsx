@@ -151,7 +151,7 @@ export default function SiteContentEditor() {
         {uploading === index ? <p role="status">Uploading video… keep this page open.</p> : null}
       </div>)}
       <button onClick={save} disabled={saving || loading || loadFailed} style={{ justifySelf: "start", border: 0, borderRadius: 999, background: "#0078d4", color: "#ffffff", padding: "13px 20px", fontWeight: 700, cursor: saving || loadFailed ? "not-allowed" : "pointer" }}>{saving ? "SAVING…" : loadFailed ? "SAVING DISABLED — LOAD ERROR" : "SAVE WEBSITE CONTENT ↗"}</button>
-      {notice ? <p role="status" style={{ fontSize: 13, color: notice.startsWith("Saved") ? "#d6b36a" : "#f2b7aa", background: notice.startsWith("Saved") ? "#211d14" : "#281512", border: "1px solid #d8e1ee", borderRadius: 8, padding: 12, lineHeight: 1.6 }}>{notice}</p> : null}
+      {notice ? <p role="status" style={{ fontSize: 13, color: notice.startsWith("Saved") ? "#0078d4" : "#b42318", background: notice.startsWith("Saved") ? "#eff6ff" : "#fef3f2", border: "1px solid #d8e1ee", borderRadius: 8, padding: 12, lineHeight: 1.6 }}>{notice}</p> : null}
     </div>}
   </section>;
 }
