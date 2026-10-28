@@ -132,26 +132,26 @@ export default function SiteContentEditor() {
     }
   }
 
-  const field: React.CSSProperties = { width: "100%", boxSizing: "border-box", border: "1px solid #30302b", borderRadius: 10, padding: 12, font: "inherit", background: "#080808", color: "#f5f5f2", outlineColor: "#d6b36a" };
+  const field: React.CSSProperties = { width: "100%", boxSizing: "border-box", border: "1px solid #d8e1ee", borderRadius: 10, padding: 12, font: "inherit", background: "#ffffff", color: "#0b1220", outlineColor: "#0078d4" };
   const label: React.CSSProperties = { display: "block", fontSize: 12, fontWeight: 700, letterSpacing: ".08em", marginBottom: 7 };
-  return <section style={{ background: "#111111", border: "1px solid #30302b", borderRadius: 16, padding: 22, marginBottom: 24 }}>
-    <p style={{ color: "#d6b36a", fontSize: 11, fontWeight: 700, letterSpacing: ".18em" }}>PORTFOLIO / CONTENT</p>
+  return <section style={{ background: "#ffffff", border: "1px solid #d8e1ee", borderRadius: 16, padding: 22, marginBottom: 24 }}>
+    <p style={{ color: "#0078d4", fontSize: 11, fontWeight: 700, letterSpacing: ".18em" }}>PORTFOLIO / CONTENT</p>
     <h2 style={{ fontSize: 30, letterSpacing: "-.05em", margin: "8px 0" }}>Edit your website</h2>
-    <p style={{ color: "#aaa69b", fontSize: 13 }}>Changes are saved to the database, not the source code. Review all text and links before saving.</p>
+    <p style={{ color: "#526174", fontSize: 13 }}>Changes are saved to the database, not the source code. Review all text and links before saving.</p>
     {loading ? <p>Loading saved content…</p> : <div style={{ display: "grid", gap: 16 }}>
       <div><label style={label}>HERO INTRO</label><textarea style={field} rows={2} maxLength={4000} value={content.intro} onChange={(e) => update("intro", e.target.value)} /></div>
       <div><label style={label}>ABOUT — LEAD</label><textarea style={field} rows={2} maxLength={4000} value={content.aboutLead} onChange={(e) => update("aboutLead", e.target.value)} /></div>
       <div><label style={label}>ABOUT — BODY</label><textarea style={field} rows={4} maxLength={4000} value={content.aboutBody} onChange={(e) => update("aboutBody", e.target.value)} /></div>
       <h3 style={{ margin: "4px 0 0" }}>Featured projects</h3>
-      {content.projects.map((project, index) => <div key={index} style={{ border: "1px solid #30302b", borderRadius: 12, padding: 14, display: "grid", gap: 10 }}>
+      {content.projects.map((project, index) => <div key={index} style={{ border: "1px solid #d8e1ee", borderRadius: 12, padding: 14, display: "grid", gap: 10 }}>
         <strong>Project {index + 1}</strong>
         {(["name", "description", "url", "status"] as const).map((key) => <label key={key} style={label}>{key.toUpperCase()}<input style={field} maxLength={1000} value={project[key]} onChange={(e) => update("projects", content.projects.map((item, i) => i === index ? { ...item, [key]: e.target.value } : item))} /></label>)}
         <label style={label}>PROJECT DEMO VIDEO (MP4 RECOMMENDED · MAX 100 MB)<input style={field} type="file" accept="video/mp4,video/webm,video/quicktime" disabled={loading || loadFailed || uploading !== null} onChange={(e) => { void uploadVideo(index, e.target.files?.[0]); e.currentTarget.value = ""; }} /></label>
-        {project.videoUrl ? <div style={{ display: "grid", gap: 8 }}><video src={project.videoUrl} muted controls playsInline style={{ width: "100%", maxHeight: 240, background: "#111", borderRadius: 8 }} /><p style={{ ...label, fontWeight: 400, overflowWrap: "anywhere" }}>Video uploaded. Save website content to publish this preview. <button type="button" onClick={() => update("projects", content.projects.map((item, i) => i === index ? { ...item, videoUrl: "" } : item))}>Remove video</button></p></div> : null}
+        {project.videoUrl ? <div style={{ display: "grid", gap: 8 }}><video src={project.videoUrl} muted controls playsInline style={{ width: "100%", maxHeight: 240, background: "#f3f8fd", borderRadius: 8 }} /><p style={{ ...label, fontWeight: 400, overflowWrap: "anywhere" }}>Video uploaded. Save website content to publish this preview. <button type="button" onClick={() => update("projects", content.projects.map((item, i) => i === index ? { ...item, videoUrl: "" } : item))}>Remove video</button></p></div> : null}
         {uploading === index ? <p role="status">Uploading video… keep this page open.</p> : null}
       </div>)}
-      <button onClick={save} disabled={saving || loading || loadFailed} style={{ justifySelf: "start", border: 0, borderRadius: 999, background: "#d6b36a", color: "#080808", padding: "13px 20px", fontWeight: 700, cursor: saving || loadFailed ? "not-allowed" : "pointer" }}>{saving ? "SAVING…" : loadFailed ? "SAVING DISABLED — LOAD ERROR" : "SAVE WEBSITE CONTENT ↗"}</button>
-      {notice ? <p role="status" style={{ fontSize: 13, color: notice.startsWith("Saved") ? "#d6b36a" : "#f2b7aa", background: notice.startsWith("Saved") ? "#211d14" : "#281512", border: "1px solid #39352b", borderRadius: 8, padding: 12, lineHeight: 1.6 }}>{notice}</p> : null}
+      <button onClick={save} disabled={saving || loading || loadFailed} style={{ justifySelf: "start", border: 0, borderRadius: 999, background: "#0078d4", color: "#ffffff", padding: "13px 20px", fontWeight: 700, cursor: saving || loadFailed ? "not-allowed" : "pointer" }}>{saving ? "SAVING…" : loadFailed ? "SAVING DISABLED — LOAD ERROR" : "SAVE WEBSITE CONTENT ↗"}</button>
+      {notice ? <p role="status" style={{ fontSize: 13, color: notice.startsWith("Saved") ? "#d6b36a" : "#f2b7aa", background: notice.startsWith("Saved") ? "#211d14" : "#281512", border: "1px solid #d8e1ee", borderRadius: 8, padding: 12, lineHeight: 1.6 }}>{notice}</p> : null}
     </div>}
   </section>;
 }
