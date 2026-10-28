@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 type PortfolioMessage = {
   id: number;
@@ -13,6 +14,8 @@ type PortfolioMessage = {
 
 export default function MessagesList({ messages }: { messages: PortfolioMessage[] }) {
   const [query, setQuery] = useState("");
+  const router = useRouter();
+  const [refreshing, startRefresh] = useTransition();
   const filtered = useMemo(() => {
     const term = query.trim().toLowerCase();
     if (!term) return messages;
@@ -30,6 +33,7 @@ export default function MessagesList({ messages }: { messages: PortfolioMessage[
           <h2 style={{ fontSize: 22, letterSpacing: "-.04em", margin: "0 0 6px" }}>Recent messages</h2>
           <p style={{ ...muted, margin: 0 }}>{filtered.length} of {messages.length} messages</p>
         </div>
+        <button type="button" onClick={() => startRefresh(() => router.refresh())} disabled={refreshing} style={{ border: "1px solid #6f5b35", borderRadius: 999, padding: "10px 14px", background: "transparent", color: "#d6b36a", fontSize: 11, fontWeight: 700, letterSpacing: ".06em", cursor: refreshing ? "wait" : "pointer" }}>{refreshing ? "REFRESHING…" : "REFRESH INBOX ↻"}</button>
         <label style={{ display: "grid", gap: 6, fontSize: 11, fontWeight: 700, letterSpacing: ".08em", width: "min(100%, 340px)" }}>
           SEARCH INBOX
           <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Name, email, topic or message" aria-label="Search messages" style={{ width: "100%", boxSizing: "border-box", padding: "12px 14px", border: "1px solid #30302b", borderRadius: 10, background: "#080808", color: "#f5f5f2", fontSize: 14, letterSpacing: 0, fontWeight: 400 }} />
