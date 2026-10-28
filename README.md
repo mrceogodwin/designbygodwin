@@ -3,10 +3,11 @@
 A premium, responsive developer portfolio built with Next.js App Router, React, TypeScript, and custom CSS.
 
 ## Features
-- Editorial light-and-dark visual system with restrained orange accents
+- Near-black, champagne-gold, and white visual system with bold typography
 - Responsive desktop, tablet, and mobile layout
 - CSS motion with reduced-motion support
-- Project cards linking to source repositories
+- Responsive project showcase cards with optional muted-autoplay demo videos and click-to-enable sound
+- Owner-managed project content and demo video uploads using Neon and Vercel Blob
 - Contact form saved to a separate Neon PostgreSQL database
 - Private owner login at `/admin/login` and protected message dashboard at `/admin`
 - Signed, HTTP-only owner session cookie and logout
