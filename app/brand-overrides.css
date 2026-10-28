@@ -378,3 +378,46 @@ button,a{-webkit-tap-highlight-color:transparent}
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
  .project-preview-video{animation:none!important}
 }
+
+/* Matching resume page: same dark canvas, white type and restrained gold details. */
+.resume-page{background:#080808!important;color:#f7f7f4!important;padding:34px 20px 70px!important}
+.resume-toolbar a{border-color:#6f5b35!important;color:#f7f7f4!important}
+.resume-toolbar a:hover{color:#d2ad63!important}
+.resume-toolbar span{font:9px var(--mono)!important;color:#a3a096!important}
+.resume-sheet{background:#10100e!important;color:#f7f7f4!important;border:1px solid #39352b!important;box-shadow:0 25px 80px #0008!important}
+.resume-header{border-color:#d2ad63!important}
+.resume-eyebrow,.resume-block>h2{color:#d2ad63!important}
+.resume-header h1 em{font-family:var(--sans)!important;color:#d2ad63!important;font-style:normal!important;font-weight:800!important}
+.resume-summary,.resume-contact span{color:#aaa69c!important}
+.resume-contact a{color:#f7f7f4!important}
+.resume-contact a:hover{color:#d2ad63!important}
+.resume-block{border-color:#39352b!important}
+.resume-skills span{border-color:#49402e!important;background:#171612!important;color:#e6dfd0!important}
+.resume-note-text{color:#9c978b!important}
+.resume-project{border-color:#39352b!important}
+.resume-project-heading h3 span,.resume-project-heading small{color:#d2ad63!important}
+.resume-project p{color:#aaa69c!important}
+.resume-project>a{color:#d2ad63!important}
+.resume-education h3{color:#f7f7f4!important}
+.resume-education p{color:#aaa69c!important}
+.resume-footer{color:#9c978b!important}
+.resume-footer a{color:#d2ad63!important}
+@media(max-width:620px){
+ .resume-page{padding:18px 10px 35px!important}
+ .resume-toolbar{align-items:flex-start;flex-direction:column}
+ .resume-toolbar span{line-height:1.7}
+ .resume-sheet{padding:24px 19px!important}
+}
+@media print{
+ html,body{background:#fff!important;color:#111!important}
+ .resume-page{background:#fff!important;color:#111!important;padding:0!important}
+ .resume-toolbar{display:none!important}
+ .resume-sheet{width:100%!important;max-width:none!important;box-shadow:none!important;border:0!important;background:#fff!important;color:#111!important;padding:0!important}
+ .resume-header{border-color:#111!important}
+ .resume-eyebrow,.resume-block>h2,.resume-project-heading h3 span,.resume-project-heading small,.resume-project>a,.resume-footer a{color:#8b6a2b!important}
+ .resume-summary,.resume-contact span,.resume-project p,.resume-education p,.resume-note-text,.resume-footer{color:#444!important}
+ .resume-contact a,.resume-education h3{color:#111!important}
+ .resume-block{border-color:#ddd!important}
+ .resume-skills span{background:#fff!important;border-color:#ddd!important;color:#111!important}
+ .resume-project{break-inside:avoid}
+}
