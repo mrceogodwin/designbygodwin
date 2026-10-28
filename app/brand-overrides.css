@@ -443,3 +443,9 @@ button,a{-webkit-tap-highlight-color:transparent}
  .project-art-video{aspect-ratio:1.18;min-height:210px}
  .project-sound-toggle,.project-video-open{font-size:6px!important;padding:0 6px}
 }
+
+
+/* Mobile header fit: keep the primary navigation control visible on narrow screens. */
+@media (max-width: 760px) {
+  .nav-availability { display: none; }
+}
