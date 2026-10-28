@@ -51,39 +51,13 @@ export default function Home() {
   }, []);
   const [activeProject, setActiveProject] = useState<string | null>(null);
   const [soundEnabled, setSoundEnabled] = useState<Record<string, boolean>>({});
-  const [typedHeadline, setTypedHeadline] = useState("momentum.");
-  useEffect(() => {
-    const words = ["momentum.", "web products.", "digital tools."];
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let wordIndex = 0;
-    let deleting = true;
-    let characterIndex = words[0].length;
-    let timer: ReturnType<typeof setTimeout>;
-    const tick = () => {
-      const current = words[wordIndex];
-      characterIndex += deleting ? -1 : 1;
-      setTypedHeadline(current.slice(0, characterIndex));
-      let delay = deleting ? 48 : 95;
-      if (characterIndex <= 0) {
-        deleting = false;
-        wordIndex = (wordIndex + 1) % words.length;
-        delay = 260;
-      } else if (characterIndex >= words[wordIndex].length) {
-        deleting = true;
-        delay = 1450;
-      }
-      timer = setTimeout(tick, delay);
-    };
-    timer = setTimeout(tick, 1700);
-    return () => clearTimeout(timer);
-  }, []);
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <main id="top">
       <header className="nav-wrap">
         <a className="brand" href="#top" aria-label="Godwin home"><span className="brand-icon">g<span>.</span></span><span className="brand-name">GODWIN<br /><small>WEB DEVELOPER</small></span></a>
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Toggle navigation">{menuOpen ? "CLOSE −" : "MENU +"}</button>
-        <nav className={menuOpen ? "main-nav nav-open" : "main-nav"} aria-label="Main navigation">
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-controls="primary-navigation" aria-expanded={menuOpen} aria-label="Toggle navigation">{menuOpen ? "CLOSE −" : "MENU +"}</button>
+        <nav id="primary-navigation" className={menuOpen ? "main-nav nav-open" : "main-nav"} aria-label="Main navigation">
           {[["About", "#about"], ["Work", "#work"], ["Services", "#services"], ["Experience", "#experience"], ["Resume", "/resume"], ["Contact", "#contact"]].map(([label, href]) => <a key={label} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}
         </nav>
         <a className="nav-availability" href="#contact"><span /> OPEN TO WORK</a>
@@ -92,13 +66,13 @@ export default function Home() {
       <section className="hero-section page-width">
         <div className="hero-copy">
           <div className="eyebrow"><span className="eyebrow-line" /> INDEPENDENT WEB DEVELOPER <span className="eyebrow-year">PORTFOLIO / 2026</span></div>
-          <h1>Digital ideas.<br /><span className="serif-word">Real</span> <span className="outlined-word typewriter-word">{typedHeadline}<span className="typing-cursor" aria-hidden="true">|</span></span></h1>
+          <h1>I build<br /><span className="serif-word">digital</span><br /><span className="outlined-word">experiences.</span></h1>
           <p className="hero-intro">{siteContent?.intro || "I’m Godwin — a self-taught developer building web experiences and digital products through curiosity, craft, and hands-on projects."}</p>
           <div className="hero-actions"><a className="button button-dark" href="#work">EXPLORE MY WORK <span>↘</span></a><a className="button button-quiet" href="#contact">LET’S CONNECT <span>↗</span></a></div>
           <div className="hero-stats"><div><strong>03</strong><span>FEATURED BUILDS</span></div><div><strong>∞</strong><span>THINGS TO LEARN</span></div><div><strong>NG</strong><span>BASED IN NIGERIA</span></div></div>
         </div>
         <div className="hero-art" aria-label="Abstract generative geometric artwork">
-          <div className="art-label art-label-top">DESIGN × CODE<br />IDEAS IN MOTION</div><div className="art-orbit orbit-one" /><div className="art-orbit orbit-two" /><div className="art-disc art-disc-portrait"><img className="hero-portrait" src="/godwin-portrait.png" alt="Godwin, web developer" onError={(event) => { event.currentTarget.style.display = "none"; }} /><span className="portrait-monogram">g.</span></div><div className="art-spark">✳</div><div className="art-coordinate">06°20&apos; N<br />05°37&apos; E</div><div className="art-label art-label-bottom">CURIOUS BY NATURE<br />BUILDER BY PRACTICE</div>
+          <div className="art-label art-label-top">DESIGN × CODE<br />IDEAS IN MOTION</div><div className="art-orbit orbit-one" /><div className="art-orbit orbit-two" /><div className="art-disc art-disc-portrait" role="img" aria-label="Gold monogram artwork representing Godwin"><span className="portrait-monogram">g.</span></div><div className="art-spark">✳</div><div className="art-coordinate">06°20&apos; N<br />05°37&apos; E</div><div className="art-label art-label-bottom">CURIOUS BY NATURE<br />BUILDER BY PRACTICE</div>
         </div>
         <a className="hero-scroll" href="#about"><span className="scroll-wheel" /> SCROLL TO DISCOVER <span>↓</span></a>
       </section>

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Godwin Oriabure — Web Developer & Digital Builder",
   description:
-    "The portfolio of Godwin Oriabure, a self-taught web developer building thoughtful digital products and web experiences.",
+    "Godwin Oriabure builds digital experiences, web applications, and product interfaces. Explore selected software projects and get in touch.",
   applicationName: "Godwin Oriabure Portfolio",
   alternates: {
     canonical: "/",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Godwin Oriabure — Web Developer & Digital Builder",
     description:
-      "Thoughtful interfaces. Useful products. Built with curiosity and intent.",
+      "Software projects, product interfaces, and digital experiences built with intent.",
     url: siteUrl,
     siteName: "Godwin Oriabure",
     type: "website",
@@ -25,13 +25,13 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Godwin Oriabure — Web Developer & Digital Builder",
     description:
-      "Thoughtful interfaces. Useful products. Built with curiosity and intent.",
+      "Software projects, product interfaces, and digital experiences built with intent.",
   },
   robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f6f5f0",
+  themeColor: "#0759c7",
   width: "device-width",
   initialScale: 1,
 };

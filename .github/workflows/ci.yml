@@ -1,0 +1,31 @@
+name: Portfolio CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - feature/premium-project-showcase-redesign
+  push:
+    branches:
+      - feature/black-gold-portfolio-redesign
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run ESLint
+        run: npm run lint
+      - name: Build Next.js app
+        run: npm run build

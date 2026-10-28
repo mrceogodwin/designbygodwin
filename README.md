@@ -3,10 +3,11 @@
 A premium, responsive developer portfolio built with Next.js App Router, React, TypeScript, and custom CSS.
 
 ## Features
-- Editorial light-and-dark visual system with restrained orange accents
+- Royal-blue homepage with white typography, refined gradients, and high-contrast project showcase cards
 - Responsive desktop, tablet, and mobile layout
 - CSS motion with reduced-motion support
-- Project cards linking to source repositories
+- Responsive project showcase cards with optional muted-autoplay demo videos and click-to-enable sound
+- Owner-managed project content and demo video uploads using Neon and Vercel Blob
 - Contact form saved to a separate Neon PostgreSQL database
 - Private owner login at `/admin/login` and protected message dashboard at `/admin`
 - Signed, HTTP-only owner session cookie and logout
@@ -30,10 +31,17 @@ Set these server-side environment variables in Vercel Project Settings → Envir
 - `ADMIN_EMAIL`: the email address used to sign in as the owner and receive notifications
 - `ADMIN_PASSWORD`: a long, unique owner password
 - `AUTH_SECRET`: a unique random secret of at least 32 characters used to sign the session cookie
+- `BLOB_READ_WRITE_TOKEN`: the Vercel Blob read/write token used for direct browser-to-Blob project demo uploads
 
 Keep these values private. Do not commit real values to GitHub or expose them as `NEXT_PUBLIC_*` variables. After setting or changing them, redeploy the relevant Vercel environment.
 
 Sign in at `/admin/login`. Only the configured owner credentials can sign in; there is no public registration route. The dashboard lists and lets you search the 100 latest contact messages.
+
+## Project demo video uploads
+
+Create a Vercel Blob store and add its `BLOB_READ_WRITE_TOKEN` as a server-side environment variable for each environment where you test or run the portfolio. The owner dashboard uploads MP4, WebM, or QuickTime videos directly from the browser to Blob (maximum 100 MB), using a server-generated upload token that requires a valid owner session. The resulting public URL is not published until you save the website content to Neon. Never expose the token as a `NEXT_PUBLIC_*` variable or commit it to Git.
+
+After deployment, verify the full flow by signing in at `/admin/login`, uploading a short demo video in `/admin`, saving the website content, and refreshing the public portfolio. Also confirm that an unauthenticated upload-token request is rejected and that the project preview autoplays muted with sound enabled only after visitor interaction.
 
 ## Optional email alerts (Brevo)
 
