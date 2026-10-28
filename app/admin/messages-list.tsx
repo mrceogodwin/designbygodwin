@@ -22,9 +22,9 @@ export default function MessagesList({ messages }: { messages: PortfolioMessage[
     );
   }, [messages, query]);
 
-  const muted: React.CSSProperties = { color: "#77766e", fontSize: 13 };
+  const muted: React.CSSProperties = { color: "#aaa69b", fontSize: 13 };
   return (
-    <section style={{ background: "#fffdf8", border: "1px solid #e2ddd2", borderRadius: 16, padding: 22 }}>
+    <section style={{ background: "#111111", border: "1px solid #30302b", borderRadius: 16, padding: 22 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap", marginBottom: 18 }}>
         <div>
           <h2 style={{ fontSize: 22, letterSpacing: "-.04em", margin: "0 0 6px" }}>Recent messages</h2>
@@ -32,7 +32,7 @@ export default function MessagesList({ messages }: { messages: PortfolioMessage[
         </div>
         <label style={{ display: "grid", gap: 6, fontSize: 11, fontWeight: 700, letterSpacing: ".08em", width: "min(100%, 340px)" }}>
           SEARCH INBOX
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Name, email, topic or message" aria-label="Search messages" style={{ width: "100%", boxSizing: "border-box", padding: "12px 14px", border: "1px solid #d8d2c6", borderRadius: 10, background: "#fff", color: "#171713", fontSize: 14, letterSpacing: 0, fontWeight: 400 }} />
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Name, email, topic or message" aria-label="Search messages" style={{ width: "100%", boxSizing: "border-box", padding: "12px 14px", border: "1px solid #30302b", borderRadius: 10, background: "#080808", color: "#f5f5f2", fontSize: 14, letterSpacing: 0, fontWeight: 400 }} />
         </label>
       </div>
       {filtered.length === 0 ? (
@@ -40,10 +40,10 @@ export default function MessagesList({ messages }: { messages: PortfolioMessage[
       ) : (
         <div style={{ display: "grid", gap: 16 }}>
           {filtered.map((message) => (
-            <article key={message.id} style={{ borderTop: "1px solid #e2ddd2", paddingTop: 18, display: "grid", gap: 10 }}>
+            <article key={message.id} style={{ borderTop: "1px solid #30302b", paddingTop: 18, display: "grid", gap: 10 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", gap: 12, flexWrap: "wrap" }}>
-                <div><h3 style={{ margin: 0, fontSize: 17 }}>{message.name}</h3><a href={`mailto:${message.email}`} style={{ color: "#a8432a", fontSize: 13 }}>{message.email}</a></div>
-                <span style={{ fontSize: 11, background: "#f0ece3", borderRadius: 999, padding: "7px 10px" }}>{message.topic}</span>
+                <div><h3 style={{ margin: 0, fontSize: 17 }}>{message.name}</h3><a href={`mailto:${message.email}`} style={{ color: "#d6b36a", fontSize: 13 }}>{message.email}</a></div>
+                <span style={{ fontSize: 11, background: "#26231d", borderRadius: 999, padding: "7px 10px" }}>{message.topic}</span>
               </div>
               <p style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere", lineHeight: 1.7, margin: 0 }}>{message.message}</p>
               <time style={{ ...muted, fontSize: 11 }}>{new Date(message.created_at).toLocaleString("en-NG", { dateStyle: "medium", timeStyle: "short", timeZone: "Africa/Lagos" })} WAT</time>
