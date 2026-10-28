@@ -9,6 +9,13 @@ const MAX_VIDEO_BYTES = 100 * 1024 * 1024;
 const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
 
 export async function POST(request: Request) {
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return NextResponse.json(
+      { error: "Video storage is not configured. Add BLOB_READ_WRITE_TOKEN from your Vercel Blob store to this project's environment variables." },
+      { status: 503, headers: { "Cache-Control": "no-store" } },
+    );
+  }
+
   try {
     const body = await request.json();
     const result = await handleUpload({
