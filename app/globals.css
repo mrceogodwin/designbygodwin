@@ -665,3 +665,55 @@ footer a, footer p, footer small { color: #d4e5ff; }
   .project-card, .button { transition: none; }
   .project-card:hover, .button:hover { transform: none; }
 }
+
+
+/* Final responsive polish: keep every breakpoint aligned with the blue-and-white direction */
+@media (min-width: 1100px) {
+  .project-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+  .project-art, .project-art.project-art-video { height: 260px; }
+  .project-body { padding: 20px 18px 18px; }
+  .project-name-row { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .project-name-row h3 { font-size: 25px; }
+  .project-body > p { min-height: 66px; }
+  .project-link-row { gap: 12px; }
+  .project-link-row > span { font-size: 8px; }
+}
+@media (min-width: 851px) and (max-width: 1099px) {
+  .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project-art, .project-art.project-art-video { height: 270px; }
+}
+@media (max-width: 640px) {
+  .main-nav {
+    background: #064ba9;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.24);
+    box-shadow: 0 18px 40px rgba(0,20,65,.3);
+  }
+  .main-nav a {
+    color: #fff;
+    border-color: rgba(255,255,255,.16);
+  }
+  .main-nav a:hover, .main-nav a:focus-visible {
+    background: rgba(255,255,255,.1);
+    color: #fff;
+  }
+  .project-grid { grid-template-columns: minmax(0, 1fr); }
+  .project-name-row { flex-direction: row; align-items: center; }
+  .project-body > p { min-height: 0; }
+  .project-art-showcase { height: clamp(230px, 68vw, 300px); }
+  .showcase-topbar { gap: 8px; }
+  .showcase-top-action { font-size: 7px; }
+  .showcase-caption { gap: 8px; font-size: 7px; }
+  .contact-form label { color: #eaf4ff; }
+  .contact-form input, .contact-form textarea, .contact-form select { color: #fff; }
+}
+.contact-form label { color: #eaf4ff; }
+.contact-form button:disabled { opacity: .7; cursor: wait; }
+.project-link-row button:focus-visible, .main-nav a:focus-visible,
+.social-card:focus-visible, .projects-footer a:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-inner, .art-disc, .art-orbit, .art-spark { animation: none !important; }
+}
