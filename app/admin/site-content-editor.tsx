@@ -80,7 +80,10 @@ export default function SiteContentEditor() {
         handleUploadUrl: "/api/admin/video",
         clientPayload: JSON.stringify({ projectIndex: index }),
       });
-      update("projects", content.projects.map((item, i) => i === index ? { ...item, videoUrl: blob.url } : item));
+      setContent((current) => ({
+        ...current,
+        projects: current.projects.map((item, i) => i === index ? { ...item, videoUrl: blob.url } : item),
+      }));
       setNotice(`Video uploaded for ${content.projects[index].name}. Save website content to publish it.`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Video upload failed.");
@@ -142,7 +145,7 @@ export default function SiteContentEditor() {
       {content.projects.map((project, index) => <div key={index} style={{ border: "1px solid #e2ddd2", borderRadius: 12, padding: 14, display: "grid", gap: 10 }}>
         <strong>Project {index + 1}</strong>
         {(["name", "description", "url", "status"] as const).map((key) => <label key={key} style={label}>{key.toUpperCase()}<input style={field} maxLength={1000} value={project[key]} onChange={(e) => update("projects", content.projects.map((item, i) => i === index ? { ...item, [key]: e.target.value } : item))} /></label>)}
-        <label style={label}>PROJECT DEMO VIDEO (MP4 RECOMMENDED · MAX 100 MB)<input style={field} type="file" accept="video/mp4,video/webm,video/quicktime" disabled={uploading !== null} onChange={(e) => { void uploadVideo(index, e.target.files?.[0]); e.currentTarget.value = ""; }} /></label>
+        <label style={label}>PROJECT DEMO VIDEO (MP4 RECOMMENDED · MAX 100 MB)<input style={field} type="file" accept="video/mp4,video/webm,video/quicktime" disabled={loading || loadFailed || uploading !== null} onChange={(e) => { void uploadVideo(index, e.target.files?.[0]); e.currentTarget.value = ""; }} /></label>
         {project.videoUrl ? <div style={{ display: "grid", gap: 8 }}><video src={project.videoUrl} muted controls playsInline style={{ width: "100%", maxHeight: 240, background: "#111", borderRadius: 8 }} /><p style={{ ...label, fontWeight: 400, overflowWrap: "anywhere" }}>Video uploaded. Save website content to publish this preview. <button type="button" onClick={() => update("projects", content.projects.map((item, i) => i === index ? { ...item, videoUrl: "" } : item))}>Remove video</button></p></div> : null}
         {uploading === index ? <p role="status">Uploading video… keep this page open.</p> : null}
       </div>)}
