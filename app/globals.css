@@ -717,3 +717,13 @@ footer a, footer p, footer small { color: #d4e5ff; }
 @media (prefers-reduced-motion: reduce) {
   .marquee-inner, .art-disc, .art-orbit, .art-spark { animation: none !important; }
 }
+
+
+/* Keep the scrolling banner inside the full-blue visual system */
+.marquee-band {
+  background: linear-gradient(90deg, #0b66dc, #03449e, #0b66dc);
+  color: #fff;
+  border-top: 1px solid rgba(255,255,255,.22);
+  border-bottom: 1px solid rgba(255,255,255,.22);
+}
+.marquee-inner b { color: #c9e2ff; }
