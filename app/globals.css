@@ -184,3 +184,72 @@ a { color: inherit; }
   .resume-summary, .resume-project p, .resume-education p, .resume-contact,
   .resume-note-text, .resume-footer { color: #444; }
 }
+
+
+/* Technical art direction: grid systems, mono labels, sharp geometry */
+:root { --serif: var(--sans); }
+body { font-family: var(--sans); }
+h1, h2, h3, .display-heading, .serif-word, .outlined-word {
+  font-family: var(--sans) !important;
+  font-style: normal !important;
+}
+.serif-word { color: #fff !important; }
+.outlined-word {
+  color: transparent !important;
+  -webkit-text-stroke: 1px #fff;
+}
+.hero-art {
+  background-color: #050505;
+  background-image: linear-gradient(#ffffff0c 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff0c 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.hero-art::after {
+  content: "+  /  SYSTEM 01";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 5;
+  color: #fff;
+  font: 9px var(--mono);
+  letter-spacing: .12em;
+}
+.art-label, .art-coordinate, .hero-scroll, .eyebrow, .section-kicker,
+.mini-label, .project-art-head, .project-art-foot, .project-status,
+.project-tech span, .projects-footer, .toolkit-strip b, .timeline-date,
+.timeline-content>span, .social-card small, .form-heading, .contact-form label,
+.form-privacy, .contact-bottom {
+  font-family: var(--mono);
+  letter-spacing: .06em;
+}
+.button, .nav-availability, .contact-form, .project-card, .project-art,
+.project-detail, .social-card, .resume-sheet, .resume-note, .resume-skills span {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.project-card { background: #050505; border: 1px solid #292929; }
+.project-card:hover { border-color: #fff; transform: translateY(-3px); }
+.project-art { position: relative; }
+.project-art::after {
+  content: "OPEN PROJECT  ↗";
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 4;
+  font: 8px var(--mono);
+  letter-spacing: .1em;
+  color: #fff;
+  background: #000;
+  border: 1px solid #555;
+  padding: 8px 10px;
+}
+.project-body { border-top: 1px solid #303030; }
+.project-tech span { background: #050505; }
+.social-card { background: #050505; }
+.social-card:hover { background: #fff; color: #000; }
+.social-card:hover .social-arrow, .social-card:hover small { color: #000 !important; }
+.contact-form input, .contact-form textarea, .contact-form select { border-radius: 0; }
+:focus-visible { outline: 2px solid #fff !important; outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) {
+  .project-card:hover { transform: none; }
+}
