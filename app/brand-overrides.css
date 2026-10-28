@@ -421,3 +421,25 @@ button,a{-webkit-tap-highlight-color:transparent}
  .resume-skills span{background:#fff!important;border-color:#ddd!important;color:#111!important}
  .resume-project{break-inside:avoid}
 }
+
+/* Uploaded project demos: stable aspect ratio, full-bleed playback and reachable controls. */
+.project-art-video{position:relative;display:block;aspect-ratio:1.72;min-height:290px;overflow:hidden;background:#0b0b0a;border-bottom:1px solid #373126;color:#f7f7f4;isolation:isolate}
+.project-preview-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;background:#0b0b0a}
+.project-art-video:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,#080808a8 0%,transparent 26%,transparent 55%,#08080899 100%)}
+.project-video-top{position:absolute;z-index:2;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;gap:12px;font:9px var(--mono);letter-spacing:.08em;text-shadow:0 1px 6px #000}
+.project-sound-toggle,.project-video-open{position:absolute;z-index:3;bottom:14px;display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:0 11px;border-radius:3px!important;font:8px var(--mono)!important;letter-spacing:.04em;cursor:pointer;backdrop-filter:blur(12px);text-shadow:none}
+.project-sound-toggle{left:14px}
+.project-video-open{right:14px}
+.project-sound-toggle:hover,.project-video-open:hover{background:#d2ad63!important;color:#080808!important}
+.project-sound-toggle:focus-visible,.project-video-open:focus-visible{outline:2px solid #f0d08b;outline-offset:3px}
+@media(max-width:760px){
+ .project-art-video{aspect-ratio:1.35;min-height:230px}
+ .project-video-top{top:11px;left:11px;right:11px;font-size:8px}
+ .project-sound-toggle,.project-video-open{bottom:10px;min-height:34px;padding:0 8px;font-size:7px!important}
+ .project-sound-toggle{left:10px}
+ .project-video-open{right:10px}
+}
+@media(max-width:390px){
+ .project-art-video{aspect-ratio:1.18;min-height:210px}
+ .project-sound-toggle,.project-video-open{font-size:6px!important;padding:0 6px}
+}
