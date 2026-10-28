@@ -33,7 +33,7 @@ export default function MessagesList({ messages }: { messages: PortfolioMessage[
           <h2 style={{ fontSize: 22, letterSpacing: "-.04em", margin: "0 0 6px" }}>Recent messages</h2>
           <p style={{ ...muted, margin: 0 }}>{filtered.length} of {messages.length} messages</p>
         </div>
-        <button type="button" onClick={() => startRefresh(() => router.refresh())} disabled={refreshing} style={{ border: "1px solid #6f5b35", borderRadius: 999, padding: "10px 14px", background: "transparent", color: "#0078d4", fontSize: 11, fontWeight: 700, letterSpacing: ".06em", cursor: refreshing ? "wait" : "pointer" }}>{refreshing ? "REFRESHING…" : "REFRESH INBOX ↻"}</button>
+        <button type="button" onClick={() => startRefresh(() => router.refresh())} disabled={refreshing} style={{ border: "1px solid #b8cce0", borderRadius: 999, padding: "10px 14px", background: "transparent", color: "#0078d4", fontSize: 11, fontWeight: 700, letterSpacing: ".06em", cursor: refreshing ? "wait" : "pointer" }}>{refreshing ? "REFRESHING…" : "REFRESH INBOX ↻"}</button>
         <label style={{ display: "grid", gap: 6, fontSize: 11, fontWeight: 700, letterSpacing: ".08em", width: "min(100%, 340px)" }}>
           SEARCH INBOX
           <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Name, email, topic or message" aria-label="Search messages" style={{ width: "100%", boxSizing: "border-box", padding: "12px 14px", border: "1px solid #d8e1ee", borderRadius: 10, background: "#ffffff", color: "#0b1220", fontSize: 14, letterSpacing: 0, fontWeight: 400 }} />
