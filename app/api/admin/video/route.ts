@@ -1,57 +1,66 @@
+import { handleUpload } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin-auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
 const MAX_VIDEO_BYTES = 100 * 1024 * 1024;
+const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
 
 export async function POST(request: Request) {
-  if (!(await getAdminSession())) {
-    return NextResponse.json({ error: "Unauthorized. Sign in to the owner dashboard first." }, { status: 401 });
-  }
-  const token = process.env.BLOB_READ_WRITE_TOKEN;
-  if (!token) {
-    return NextResponse.json({ error: "Video storage is not configured. Add BLOB_READ_WRITE_TOKEN from Vercel Blob to this project's environment variables." }, { status: 503 });
-  }
-
-  let form: FormData;
   try {
-    form = await request.formData();
-  } catch {
-    return NextResponse.json({ error: "Choose a video file and try again." }, { status: 400 });
-  }
-  const file = form.get("file");
-  if (!(file instanceof File)) {
-    return NextResponse.json({ error: "No video file was received." }, { status: 400 });
-  }
-  if (!file.type.startsWith("video/")) {
-    return NextResponse.json({ error: "Only video files are accepted." }, { status: 415 });
-  }
-  if (file.size <= 0 || file.size > MAX_VIDEO_BYTES) {
-    return NextResponse.json({ error: "Video must be between 1 byte and 100 MB." }, { status: 413 });
-  }
+    const body = await request.json();
+    const result = await handleUpload({
+      body,
+      request,
+      onBeforeGenerateToken: async (_pathname, clientPayload) => {
+        const ownerEmail = await getAdminSession();
+        if (!ownerEmail) {
+          throw new Error("Unauthorized. Sign in to the owner dashboard first.");
+        }
 
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-").slice(-100) || "project-demo.mp4";
-  const pathname = `project-demos/${Date.now()}-${safeName}`;
-  try {
-    const upload = await fetch(`https://blob.vercel-storage.com/${pathname.split("/").map(encodeURIComponent).join("/")}`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "x-api-version": "7",
-        "x-content-type": file.type,
-        "x-add-random-suffix": "1",
-        "Content-Type": file.type,
+        // Treat clientPayload as untrusted input. It is only used to reject
+        // malformed requests; authorization comes exclusively from the session.
+        if (clientPayload !== undefined && clientPayload !== null) {
+          try {
+            const parsed = JSON.parse(clientPayload);
+            if (!parsed || !Number.isInteger(parsed.projectIndex) || parsed.projectIndex < 0 || parsed.projectIndex > 2) {
+              throw new Error("Invalid project selection.");
+            }
+          } catch {
+            throw new Error("Invalid upload metadata.");
+          }
+        }
+
+        return {
+          allowedContentTypes: ALLOWED_VIDEO_TYPES,
+          maximumSizeInBytes: MAX_VIDEO_BYTES,
+          addRandomSuffix: true,
+          tokenPayload: JSON.stringify({ ownerEmail }),
+        };
       },
-      body: await file.arrayBuffer(),
-      cache: "no-store",
+      onUploadCompleted: async ({ blob, tokenPayload }) => {
+        // Blob calls this callback after a successful upload. The SDK verifies
+        // the callback payload; the URL is saved to Neon only when the owner
+        // explicitly saves the portfolio content in the dashboard.
+        if (!blob.url || !tokenPayload) {
+          throw new Error("Upload completion could not be verified.");
+        }
+        const payload = JSON.parse(tokenPayload) as { ownerEmail?: unknown };
+        if (typeof payload.ownerEmail !== "string" || !payload.ownerEmail) {
+          throw new Error("Upload owner could not be verified.");
+        }
+      },
     });
-    const result = await upload.json().catch(() => ({})) as { url?: string; error?: { message?: string } | string };
-    if (!upload.ok || typeof result.url !== "string") {
-      return NextResponse.json({ error: typeof result.error === "string" ? result.error : result.error?.message || "Storage rejected the video. Check the Blob token and try again." }, { status: 502 });
-    }
-    return NextResponse.json({ ok: true, url: result.url }, { headers: { "Cache-Control": "no-store" } });
-  } catch {
-    return NextResponse.json({ error: "Video storage could not be reached. Try again shortly." }, { status: 502 });
+
+    return NextResponse.json(result, { headers: { "Cache-Control": "no-store" } });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Video upload failed.";
+    const status = /unauthorized/i.test(message) ? 401 : /invalid|allowed|size|type/i.test(message) ? 400 : 502;
+    return NextResponse.json({ error: message }, {
+      status,
+      headers: { "Cache-Control": "no-store" },
+    });
   }
 }
