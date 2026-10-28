@@ -120,8 +120,23 @@ export default function Home() {
             <div className="project-video-top"><span>LIVE BUILD / {project.id}</span><span>{project.year}</span></div>
             <button className="project-sound-toggle" type="button" aria-pressed={Boolean(soundEnabled[project.id])} onClick={() => setSoundEnabled((current) => ({ ...current, [project.id]: !current[project.id] }))}>{soundEnabled[project.id] ? "♫ SOUND ON · MUTE" : "♫ ENABLE SOUND"}</button>
             <a className="project-video-open" href={projectHref} target="_blank" rel="noreferrer">OPEN PROJECT ↗</a>
-          </div> : <a className="project-art" href={projectHref} target="_blank" rel="noreferrer" aria-label={"Open " + projectName + " project in a new tab"}>
-            <div className="project-art-head"><span>PROJECT / {project.id}</span><span>{project.year} ↗</span></div><div className="project-glyph">{project.symbol}<span>.</span></div><div className="project-art-lines" /><div className="project-art-foot"><span>{project.category}</span><span>OPEN PROJECT ↗</span></div>
+          </div> : <a className={"project-art project-art-showcase showcase-" + project.theme} href={projectHref} target="_blank" rel="noreferrer" aria-label={"Open " + projectName + " project in a new tab"}>
+            <div className="showcase-topbar"><span className="showcase-brand"><b>{project.symbol}.</b> {project.name}</span><span className="showcase-window-dots"><i/><i/><i/></span><span className="showcase-top-action">OPEN BUILD ↗</span></div>
+            <div className="showcase-canvas">
+              {project.theme === "vibr" ? <div className="mock-vibr">
+                <div className="mock-vibr-nav"><b>vibr<span>.</span></b><span>Discover</span><span>Founders</span><span>Projects</span><i>＋ Submit build</i></div>
+                <div className="mock-vibr-heading"><small>THE BUILDER NETWORK</small><strong>Good ideas deserve<br/><em>to be seen.</em></strong><p>Meet the people building what comes next.</p><div className="mock-pills"><b>Explore projects ↗</b><span>Meet founders</span></div></div>
+                <div className="mock-vibr-people"><div><i className="avatar avatar-a">A</i><span><b>AfriLabs</b><small>Product · Lagos</small></span><strong>↗</strong></div><div><i className="avatar avatar-b">T</i><span><b>Tech founders</b><small>Community · Africa</small></span><strong>↗</strong></div></div>
+              </div> : project.theme === "stacks" ? <div className="mock-stacks">
+                <aside><b>stacks<span>.</span></b><small>DISCOVER</small><span>⌕ &nbsp; All products</span><span>▦ &nbsp; WordPress</span><span>◈ &nbsp; Web tools</span><span>⌘ &nbsp; Developer tools</span><small>YOUR WORKSPACE</small><span>♡ &nbsp; Saved items</span></aside>
+                <div className="mock-stacks-main"><div className="mock-stacks-head"><span>Marketplace / Explore</span><b>Sign in ↗</b></div><h4>Tools for the way<br/>you <em>work.</em></h4><p>Thoughtful software. Less busywork.</p><div className="mock-search">⌕ &nbsp; Search plugins, apps and tools...</div><div className="mock-product-row"><div><i>W</i><b>WP Toolkit</b><small>Plugins · WordPress</small><strong>$4.00</strong></div><div><i>⌘</i><b>Focus Board</b><small>Productivity · Web</small><strong>$2.00</strong></div><div><i>✳</i><b>Form Builder</b><small>Utilities · Web</small><strong>$5.00</strong></div></div></div>
+              </div> : <div className="mock-kilode">
+                <div className="mock-kilode-nav"><b>KILODE<span>.</span></b><span>ENTERTAINMENT</span><span>PEOPLE</span><span>BUSINESS</span><span>GIST ↗</span></div>
+                <div className="mock-kilode-feature"><div className="mock-kilode-copy"><small>THE LATEST / CULTURE</small><strong>What’s happening<br/>right <em>now?</em></strong><p>Stories, culture and conversations shaping the moment.</p><b>READ THE LATEST ↗</b></div><div className="mock-kilode-image"><span>KO</span><i>✳</i><b>THE CULTURE<br/>IS ALWAYS ON.</b></div></div>
+                <div className="mock-kilode-bottom"><span>01 — TRENDING NOW</span><b>Entertainment, people & culture</b><span>SCROLL TO EXPLORE ↓</span></div>
+              </div>}
+            </div>
+            <div className="showcase-caption"><span>INTERFACE CONCEPT <i>·</i> {project.category}</span><span>VIEW PROJECT ↗</span></div>
           </a>}
           <div className="project-body"><div className="project-name-row"><h3><a href={projectHref} target="_blank" rel="noreferrer" aria-label={"Open " + projectName + " project"}>{projectName} ↗</a></h3><span className="project-status"><i />{projectStatus}</span></div><p>{projectDescription}</p><div className="project-tech">{project.stack.map(t => <span key={t}>{t}</span>)}</div>{activeProject === project.id && <div className="project-detail"><p>{project.detail}</p><a href={project.repo} target="_blank" rel="noreferrer">VIEW SOURCE REPOSITORY ↗</a></div>}<div className="project-link-row"><span>CASE STUDY / BUILD NOTES</span><button onClick={() => setActiveProject(activeProject === project.id ? null : project.id)}>{activeProject === project.id ? "CLOSE −" : "VIEW DETAILS +"}</button></div></div>
         </article>; })}</div>
