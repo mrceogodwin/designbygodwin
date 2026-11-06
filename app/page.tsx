@@ -26,7 +26,7 @@ const socials = [
 ];
 
 type EditableProject = { name: string; description: string; url: string; status: string; videoUrl?: string };
-type EditableContent = { intro: string; aboutLead: string; aboutBody: string; projects: EditableProject[] };
+type EditableContent = { intro: string; aboutLead: string; aboutBody: string; heroImageUrl?: string; projects: EditableProject[] };
 
 export default function Home() {
   const [siteContent, setSiteContent] = useState<EditableContent | null>(null);
@@ -37,7 +37,7 @@ export default function Home() {
       const value: unknown = data.content;
       if (!value || typeof value !== "object" || Array.isArray(value)) return;
       const candidate = value as Record<string, unknown>;
-      if (!["intro", "aboutLead", "aboutBody"].every((key) => typeof candidate[key] === "string")) return;
+      if (!["intro", "aboutLead", "aboutBody"].every((key) => typeof candidate[key] === "string")) return;\n      if (candidate.heroImageUrl !== undefined && typeof candidate.heroImageUrl !== "string") return;
       if (!Array.isArray(candidate.projects) || candidate.projects.length !== 3) return;
       const validProjects = candidate.projects.every((item) => {
         if (!item || typeof item !== "object" || Array.isArray(item)) return false;
@@ -98,7 +98,7 @@ export default function Home() {
           <div className="hero-stats"><div><strong>03</strong><span>FEATURED BUILDS</span></div><div><strong>∞</strong><span>THINGS TO LEARN</span></div><div><strong>NG</strong><span>BASED IN NIGERIA</span></div></div>
         </div>
         <div className="hero-art" aria-label="Abstract generative geometric artwork">
-          <div className="art-label art-label-top">DESIGN × CODE<br />IDEAS IN MOTION</div><div className="art-orbit orbit-one" /><div className="art-orbit orbit-two" /><div className="art-disc art-disc-portrait"><img className="hero-portrait" src="/godwin-portrait.png" alt="Godwin, web developer" onError={(event) => { event.currentTarget.style.display = "none"; }} /><span className="portrait-monogram">g.</span></div><div className="art-coordinate">06°20&apos; N<br />05°37&apos; E</div><div className="art-label art-label-bottom">CURIOUS BY NATURE<br />BUILDER BY PRACTICE</div>
+          <div className="art-label art-label-top">DESIGN × CODE<br />IDEAS IN MOTION</div><div className="art-orbit orbit-one" /><div className="art-orbit orbit-two" /><div className="art-disc art-disc-portrait">{siteContent?.heroImageUrl ? <img className="hero-portrait" src={siteContent.heroImageUrl} alt="Godwin, web developer" /> : <span className="portrait-monogram">g.</span>}</div><div className="art-coordinate">06°20&apos; N<br />05°37&apos; E</div><div className="art-label art-label-bottom">CURIOUS BY NATURE<br />BUILDER BY PRACTICE</div>
         </div>
         <a className="hero-scroll" href="#about"><span className="scroll-wheel" /> SCROLL TO DISCOVER <span>↓</span></a>
       </section>
