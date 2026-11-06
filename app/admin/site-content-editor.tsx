@@ -150,6 +150,7 @@ export default function SiteContentEditor() {
   }
 
   const field: React.CSSProperties = { width: "100%", boxSizing: "border-box", border: "1px solid #d8d2c6", borderRadius: 10, padding: 12, font: "inherit", background: "#fff" };
+  const muted: React.CSSProperties = { color: "#77766e", fontSize: 13 }; 
   const label: React.CSSProperties = { display: "block", fontSize: 12, fontWeight: 700, letterSpacing: ".08em", marginBottom: 7 };
   return <section style={{ background: "#fffdf8", border: "1px solid #e2ddd2", borderRadius: 16, padding: 22, marginBottom: 24 }}>
     <p style={{ color: "#d94e2e", fontSize: 11, fontWeight: 700, letterSpacing: ".18em" }}>PORTFOLIO / CONTENT</p>
