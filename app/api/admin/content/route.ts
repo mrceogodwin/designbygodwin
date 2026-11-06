@@ -27,6 +27,8 @@ function isValidContent(value: unknown): boolean {
   const content = value as Record<string, unknown>;
   if (![content.intro, content.aboutLead, content.aboutBody].every((field) => typeof field === "string" && field.length <= 4000)) return false;
   if (!Array.isArray(content.projects) || content.projects.length !== 3) return false;
+  if (content.heroImageUrl !== undefined && typeof content.heroImageUrl !== "string") return false;
+  if (typeof content.heroImageUrl === "string" && content.heroImageUrl !== "") { try { if (new URL(content.heroImageUrl).protocol !== "https:") return false; } catch { return false; } }
   return content.projects.every((item) => {
     if (!item || typeof item !== "object" || Array.isArray(item)) return false;
     const project = item as Record<string, unknown>;
@@ -110,7 +112,9 @@ export async function PUT(request: Request) {
     projects.push({ name: project.name, description: project.description, url: project.url, status: project.status, ...(typeof project.videoUrl === "string" && project.videoUrl ? { videoUrl: project.videoUrl } : {}) });
   }
 
-  const content = { intro: value.intro, aboutLead: value.aboutLead, aboutBody: value.aboutBody, projects };
+  const heroImageUrl = typeof value.heroImageUrl === "string" ? value.heroImageUrl : "";
+  if (heroImageUrl) { try { if (new URL(heroImageUrl).protocol !== "https:") throw new Error("HTTPS required"); } catch { return jsonNoStore({ error: "Profile image URL must be a valid HTTPS URL." }, { status: 400 }); } }
+  const content = { intro: value.intro, aboutLead: value.aboutLead, aboutBody: value.aboutBody, ...(heroImageUrl ? { heroImageUrl } : {}), projects };
   try {
     const sql = neon(process.env.DATABASE_URL);
     await sql`CREATE TABLE IF NOT EXISTS portfolio_site_content (id INTEGER PRIMARY KEY CHECK (id = 1), content JSONB NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
