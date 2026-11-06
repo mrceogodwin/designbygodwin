@@ -7,6 +7,7 @@ type SiteContent = {
   intro: string;
   aboutLead: string;
   aboutBody: string;
+  heroImageUrl?: string;
   projects: Project[];
 };
 
@@ -46,6 +47,7 @@ export default function SiteContentEditor() {
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState("");
   const [uploading, setUploading] = useState<number | null>(null);
+  const [uploadingPortrait, setUploadingPortrait] = useState(false);
 
   useEffect(() => {
     fetch("/api/admin/content")
@@ -61,6 +63,29 @@ export default function SiteContentEditor() {
       })
       .finally(() => setLoading(false));
   }, []);
+
+  async function uploadPortrait(file?: File) {
+    if (!file) return;
+    if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || file.size > 8 * 1024 * 1024) {
+      setNotice("Choose a PNG, JPEG or WebP image no larger than 8 MB.");
+      return;
+    }
+    setUploadingPortrait(true);
+    setNotice("");
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const response = await fetch("/api/admin/video", { method: "POST", body: form });
+      const result = await response.json() as { url?: string; error?: string };
+      if (!response.ok || !result.url) throw new Error(result.error || "Portrait upload failed.");
+      setContent((current) => ({ ...current, heroImageUrl: result.url }));
+      setNotice("Portrait uploaded. Save website content to publish it.");
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Portrait upload failed.");
+    } finally {
+      setUploadingPortrait(false);
+    }
+  }
 
   async function uploadVideo(index: number, file?: File) {
     if (!file) return;
@@ -134,6 +159,14 @@ export default function SiteContentEditor() {
       <div><label style={label}>HERO INTRO</label><textarea style={field} rows={2} maxLength={4000} value={content.intro} onChange={(e) => update("intro", e.target.value)} /></div>
       <div><label style={label}>ABOUT — LEAD</label><textarea style={field} rows={2} maxLength={4000} value={content.aboutLead} onChange={(e) => update("aboutLead", e.target.value)} /></div>
       <div><label style={label}>ABOUT — BODY</label><textarea style={field} rows={4} maxLength={4000} value={content.aboutBody} onChange={(e) => update("aboutBody", e.target.value)} /></div>
+      <h3 style={{ margin: "4px 0 0" }}>Hero portrait</h3>
+      <div style={{ border: "1px solid #e2ddd2", borderRadius: 12, padding: 14, display: "grid", gap: 10 }}>
+        <p style={{ ...muted, margin: 0 }}>Upload a transparent PNG or a regular portrait image. It will appear in the circular artwork on your homepage.</p>
+        {content.heroImageUrl ? <img src={content.heroImageUrl} alt="Current portfolio portrait" style={{ width: 180, aspectRatio: "1", objectFit: "cover", borderRadius: "50%", background: "#101712", border: "1px solid #d8d2c6" }} /> : <p style={{ ...muted, margin: 0 }}>No portrait uploaded yet — the monogram is shown instead.</p>}
+        <label style={label}>UPLOAD PROFILE PHOTO (PNG / JPG / WEBP · MAX 8 MB)<input style={field} type="file" accept="image/png,image/jpeg,image/webp" disabled={uploadingPortrait} onChange={(e) => { void uploadPortrait(e.target.files?.[0]); e.currentTarget.value = ""; }} /></label>
+        {uploadingPortrait ? <p role="status">Uploading portrait…</p> : null}
+        {content.heroImageUrl ? <button type="button" onClick={() => setContent((current) => ({ ...current, heroImageUrl: "" }))} style={{ justifySelf: "start" }}>Remove portrait</button> : null}
+      </div>
       <h3 style={{ margin: "4px 0 0" }}>Featured projects</h3>
       {content.projects.map((project, index) => <div key={index} style={{ border: "1px solid #e2ddd2", borderRadius: 12, padding: 14, display: "grid", gap: 10 }}>
         <strong>Project {index + 1}</strong>
