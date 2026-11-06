@@ -37,7 +37,8 @@ export default function Home() {
       const value: unknown = data.content;
       if (!value || typeof value !== "object" || Array.isArray(value)) return;
       const candidate = value as Record<string, unknown>;
-      if (!["intro", "aboutLead", "aboutBody"].every((key) => typeof candidate[key] === "string")) return;\n      if (candidate.heroImageUrl !== undefined && typeof candidate.heroImageUrl !== "string") return;
+      if (!["intro", "aboutLead", "aboutBody"].every((key) => typeof candidate[key] === "string")) return;
+      if (candidate.heroImageUrl !== undefined && typeof candidate.heroImageUrl !== "string") return;
       if (!Array.isArray(candidate.projects) || candidate.projects.length !== 3) return;
       const validProjects = candidate.projects.every((item) => {
         if (!item || typeof item !== "object" || Array.isArray(item)) return false;
