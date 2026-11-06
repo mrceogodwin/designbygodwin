@@ -4,6 +4,7 @@ import { getAdminSession } from "@/lib/admin-auth";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const MAX_VIDEO_BYTES = 100 * 1024 * 1024;
+const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 
 export async function POST(request: Request) {
   if (!(await getAdminSession())) {
@@ -24,15 +25,19 @@ export async function POST(request: Request) {
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "No video file was received." }, { status: 400 });
   }
-  if (!file.type.startsWith("video/")) {
-    return NextResponse.json({ error: "Only video files are accepted." }, { status: 415 });
+  const isVideo = file.type.startsWith("video/");
+  const isImage = ["image/png", "image/jpeg", "image/webp"].includes(file.type);
+  if (!isVideo && !isImage) {
+    return NextResponse.json({ error: "Upload a PNG, JPEG, WebP image or a supported video file." }, { status: 415 });
   }
-  if (file.size <= 0 || file.size > MAX_VIDEO_BYTES) {
-    return NextResponse.json({ error: "Video must be between 1 byte and 100 MB." }, { status: 413 });
+  const maxBytes = isImage ? MAX_IMAGE_BYTES : MAX_VIDEO_BYTES;
+  if (file.size <= 0 || file.size > maxBytes) {
+    return NextResponse.json({ error: isImage ? "Profile images must be no larger than 8 MB." : "Video must be between 1 byte and 100 MB." }, { status: 413 });
   }
 
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-").slice(-100) || "project-demo.mp4";
-  const pathname = `project-demos/${Date.now()}-${safeName}`;
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-").slice(-100) || (isImage ? "profile-image.png" : "project-demo.mp4");
+  const folder = isImage ? "portfolio-images" : "project-demos";
+  const pathname = `${folder}/${Date.now()}-${safeName}`;
   try {
     const upload = await fetch(`https://blob.vercel-storage.com/${pathname.split("/").map(encodeURIComponent).join("/")}`, {
       method: "PUT",
