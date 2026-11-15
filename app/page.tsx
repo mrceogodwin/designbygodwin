@@ -87,7 +87,7 @@ export default function Home() {
         <nav className={menuOpen ? "main-nav nav-open" : "main-nav"} aria-label="Main navigation">
           {[["About", "#about"], ["Work", "#work"], ["Services", "#services"], ["Experience", "#experience"], ["Resume", "/resume"], ["Contact", "#contact"]].map(([label, href]) => <a key={label} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}
         </nav>
-        <a className="nav-availability" href="#contact"><span /> OPEN TO WORK</a>
+        <a className="nav-availability" href="#contact">OPEN TO WORK</a>
       </header>
 
       <section className="hero-section page-width">
