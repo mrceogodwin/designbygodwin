@@ -82,3 +82,15 @@
 /* Personal portrait in the hero emblem */
 .art-disc-portrait{overflow:hidden;background:var(--orange);isolation:isolate}.hero-portrait{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 24%;border-radius:50%;z-index:2;mix-blend-mode:normal}.portrait-monogram{position:absolute;z-index:3;right:8%;bottom:1%;font-size:clamp(34px,4vw,48px)!important;line-height:1;color:var(--ink);background:var(--orange);padding:0 8px 6px;border-radius:50%;letter-spacing:-.13em}.art-disc-portrait:before{z-index:4;pointer-events:none;inset:13px}
 @media(max-width:700px){.hero-art{height:auto;aspect-ratio:1/1;max-width:none}.hero-portrait{object-position:center 22%}.art-disc-portrait{width:53%}}
+
+/* Geometric Godwin brand lockup */
+.brand-lockup{display:flex;align-items:center;gap:11px;min-width:0}
+.brand-symbol{width:39px;height:39px;flex:0 0 39px;color:#19c783;overflow:visible}
+.brand-wordmark{display:flex;flex-direction:column;gap:3px;line-height:1}
+.brand-wordmark strong{font:700 15px/1 var(--sans);letter-spacing:.15em;color:var(--ink)}
+.brand-wordmark strong span{color:#19c783}
+.brand-wordmark small{font:8px/1.2 var(--mono);letter-spacing:.16em;color:#858278}
+.contact-bottom .brand-symbol{width:32px;height:32px;flex-basis:32px}
+.contact-bottom .brand-wordmark strong{font-size:11px}
+.contact-bottom .brand-wordmark small{font-size:7px}
+@media(max-width:640px){.brand-lockup{gap:8px}.brand-symbol{width:33px;height:33px;flex-basis:33px}.brand-wordmark strong{font-size:12px}.brand-wordmark small{font-size:7px}}
