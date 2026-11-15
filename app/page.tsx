@@ -82,7 +82,7 @@ export default function Home() {
   return (
     <main id="top">
       <header className="nav-wrap">
-        <a className="brand" href="#top" aria-label="Godwin home"><span className="brand-icon">g<span>.</span></span><span className="brand-name">GODWIN<br /><small>WEB DEVELOPER</small></span></a>
+        <BrandLogo />
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Toggle navigation">{menuOpen ? "CLOSE −" : "MENU +"}</button>
         <nav className={menuOpen ? "main-nav nav-open" : "main-nav"} aria-label="Main navigation">
           {[["About", "#about"], ["Work", "#work"], ["Services", "#services"], ["Experience", "#experience"], ["Resume", "/resume"], ["Contact", "#contact"]].map(([label, href]) => <a key={label} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}
@@ -135,8 +135,22 @@ export default function Home() {
 
       <section className="social-section page-width" id="socials"><div className="section-kicker"><span>05 / ELSEWHERE</span><span>FIND ME ONLINE</span></div><div className="social-heading"><h2 className="display-heading">Let’s connect<br /><em>outside the screen.</em></h2><p>Explore my code or use the contact form for roles, projects, and collaborations.</p></div><div className="social-grid">{socials.map(s => <a className="social-card" href={s.href} key={s.name} target={s.external ? "_blank" : undefined} rel={s.external ? "noreferrer" : undefined}><span className="social-icon">{s.icon}</span><span><strong>{s.name}</strong><small>{s.handle}</small></span></a>)}</div></section>
 
-      <section className="contact-section" id="contact"><div className="page-width"><div className="section-kicker"><span>06 / START A CONVERSATION</span><span>CONTACT</span></div><div className="contact-layout"><div className="contact-copy"><p className="mini-label">AVAILABLE FOR REMOTE OPPORTUNITIES</p><h2 className="display-heading">Have a good<br /><em>one in mind?</em></h2><p>Tell me about the role, project, or idea. I’m happy to connect and see whether I can help.</p><a className="email-copy" href="https://github.com/mrceogodwin" target="_blank" rel="noreferrer">Connect through GitHub <span>OPEN PROFILE ↗</span></a><p className="contact-note">Direct email contact can be added once your preferred professional email is confirmed.</p></div><ContactForm /></div><div className="contact-bottom"><a className="brand" href="#top"><span className="brand-icon">g<span>.</span></span><span className="brand-name">GODWIN<br /><small>WEB DEVELOPER</small></span></a><span>DESIGNED WITH INTENT · BUILT WITH CURIOSITY</span><a href="#top">BACK TO TOP ↑</a></div></div></section>
+      <section className="contact-section" id="contact"><div className="page-width"><div className="section-kicker"><span>06 / START A CONVERSATION</span><span>CONTACT</span></div><div className="contact-layout"><div className="contact-copy"><p className="mini-label">AVAILABLE FOR REMOTE OPPORTUNITIES</p><h2 className="display-heading">Have a good<br /><em>one in mind?</em></h2><p>Tell me about the role, project, or idea. I’m happy to connect and see whether I can help.</p><a className="email-copy" href="https://github.com/mrceogodwin" target="_blank" rel="noreferrer">Connect through GitHub <span>OPEN PROFILE ↗</span></a><p className="contact-note">Direct email contact can be added once your preferred professional email is confirmed.</p></div><ContactForm /></div><div className="contact-bottom"><BrandLogo /><span>DESIGNED WITH INTENT · BUILT WITH CURIOSITY</span><a href="#top">BACK TO TOP ↑</a></div></div></section>
     </main>
+  );
+}
+
+
+function BrandLogo() {
+  return (
+    <a className="brand brand-lockup" href="#top" aria-label="Godwin home">
+      <svg className="brand-symbol" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M82 12H39C24 12 12 24 12 39v22c0 15 12 27 27 27h17V69H39c-5 0-8-3-8-8V39c0-5 3-8 8-8h43z" fill="currentColor"/>
+        <path d="M48 44h38v13H48z" fill="#f5f2ea"/>
+        <path d="M62 57h18L64 88H46z" fill="#d6b56d"/>
+      </svg>
+      <span className="brand-wordmark"><strong>GODWIN<span>.</span></strong><small>WEB DEVELOPER</small></span>
+    </a>
   );
 }
 
